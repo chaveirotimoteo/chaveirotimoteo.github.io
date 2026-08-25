@@ -1,11 +1,4004 @@
 {
-  "updatedAt": "2026-08-25T00:00:00.000Z",
+  "updatedAt": "2026-08-25T23:23:00.351Z",
   "categories": [
     {
-      "name": "Exemplo — Categoria 1",
+      "name": "GERAL",
       "services": [
-        { "name": "Serviço de exemplo A", "sub": "", "price": 0, "note": "Suba sua planilha na área Admin para substituir estes dados" },
-        { "name": "Serviço de exemplo B", "sub": "Sublinha / variação", "price": 0, "note": "" }
+        {
+          "name": "Deslocamento técnico",
+          "sub": "",
+          "price": 50,
+          "note": "(quando é só a visita ou uma manutenção muito simples)"
+        }
+      ]
+    },
+    {
+      "name": "CONFECÇÃO (Residencial)",
+      "services": [
+        {
+          "name": "Abertura + Confecção Residencial Comum (2 chaves)",
+          "sub": "",
+          "price": 130,
+          "note": "Dependendo a distancia (longe) ou for marca complexa, reajustar o valor para até 170,00"
+        },
+        {
+          "name": "Abertura + Confecção Residencial HDL ou AGL (2 chaves)",
+          "sub": "",
+          "price": 150,
+          "note": "Dependendo a distancia (longe) ou for marca complexa, reajustar o valor para até 170,00"
+        },
+        {
+          "name": "Abertura + Confecção Residencial Fechadura - Sobrepor STAM",
+          "sub": "",
+          "price": 250,
+          "note": "Neste valor vamos por já fechadura nova (fechadura ruim de fazer chave por isso nova)"
+        },
+        {
+          "name": "Abertura + Confecção Tetra - Cadeado de chão",
+          "sub": "",
+          "price": 180,
+          "note": "Maioria dos cados, levar cadeado de chão novo, (incluso no valor) / Depender a distancia (longe) ou complexidade, reajustar o valor para até 250,00"
+        },
+        {
+          "name": "Abertura + Confecção Tetra - Trava lateral",
+          "sub": "",
+          "price": 180,
+          "note": "Peça do cliente com, 2 chaves"
+        },
+        {
+          "name": "Abertura + Confecção Tetra - Fechadura auxiliar em geral",
+          "sub": "",
+          "price": 180,
+          "note": "Peça do cliente com, 2 chaves"
+        },
+        {
+          "name": "Abertura + Confecção Tetra - Fechadura auxiliar ( Aliança e stam )",
+          "sub": "",
+          "price": 180,
+          "note": "Verificar peça nova, ou fazer chave para a do cliente"
+        }
+      ]
+    },
+    {
+      "name": "ABERTURA (Autos e Residenciais)",
+      "services": [
+        {
+          "name": "Residencial, Comercial",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Abertura Residencial - Só abrir - chave comum",
+          "sub": "",
+          "price": 80,
+          "note": "Dependendo a distancia (longe) ou for marca complexa, reajustar o valor para até 130,00"
+        },
+        {
+          "name": "Abertura Residencial - chave tetra",
+          "sub": "",
+          "price": 110,
+          "note": "Dependendo a distancia (longe) ou for marca complexa, reajustar o valor para até 150,00. Verificar se não são duas fechaduras(par). Se for o par de fechaduras cobrar 150-170,00"
+        },
+        {
+          "name": "Veículos",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Abertura veículos - até 2002",
+          "sub": "",
+          "price": 130,
+          "note": "Dependendo a distancia (longe) ou for marca complexa, reajustar o valor para até 160,00"
+        },
+        {
+          "name": "Abertura veículos - 2003 até 2018",
+          "sub": "",
+          "price": 140,
+          "note": "Dependendo a distancia (longe) ou for marca complexa, reajustar o valor para até 170,00"
+        },
+        {
+          "name": "Abertura veículos - 2019 até 2026",
+          "sub": "",
+          "price": 170,
+          "note": "Dependendo a distancia (longe) ou for marca complexa, reajustar o valor para até 220,00"
+        },
+        {
+          "name": "Abertura Van / Utilitários",
+          "sub": "",
+          "price": 220,
+          "note": "Dependendo a distancia (longe) ou for marca complexa, reajustar o valor para até 170,00"
+        },
+        {
+          "name": "Abertura Biz (báu do banco) - até 2026",
+          "sub": "",
+          "price": 130,
+          "note": "Dependendo a distancia (longe) ou for marca complexa, reajustar o valor para até 160,00"
+        },
+        {
+          "name": "Caminhões Não abrimos mais!",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "name": "CONTROLES (Autos e Residenciais",
+      "services": [
+        {
+          "name": "Controle Residencial ( PPA ) já codificado indo no local",
+          "sub": "",
+          "price": 120,
+          "note": "Dependendo a distancia (longe), reajustar o valor para até 140,00"
+        },
+        {
+          "name": "Controle Residencial ( Peccinin ) já codificado indo no local",
+          "sub": "",
+          "price": 120,
+          "note": "Dependendo a distancia (longe), reajustar o valor para até 140,00"
+        },
+        {
+          "name": "Controle Residencial ( Garen, Rossi, Intelbras ) já codificado indo no local",
+          "sub": "",
+          "price": 120,
+          "note": "Dependendo a distancia (longe), reajustar o valor para até 140,00"
+        },
+        {
+          "name": "Controle Clonagem, codificado na loja",
+          "sub": "",
+          "price": 120,
+          "note": ""
+        },
+        {
+          "name": "Venda no balcão qualquer controle residencial - ( sem codificar )",
+          "sub": "",
+          "price": 70,
+          "note": "Todas as marcas, PPA, Peccinin, Intelbras, Rossi."
+        },
+        {
+          "name": "Controle Automotivo ( Positron )",
+          "sub": "",
+          "price": 119.9,
+          "note": "valor incluso codificação"
+        },
+        {
+          "name": "Controle Automotivo ( Look Out )",
+          "sub": "",
+          "price": 119.9,
+          "note": "valor incluso codificação"
+        },
+        {
+          "name": "Controle Automotivo ( Olimpus )",
+          "sub": "",
+          "price": 119.9,
+          "note": "valor incluso codificação"
+        },
+        {
+          "name": "Controle Automotivo ( Ford 4 e 3 botões )",
+          "sub": "",
+          "price": 119.9,
+          "note": "valor incluso codificação"
+        },
+        {
+          "name": "Controle Automotivo ( Toyota antigo )",
+          "sub": "",
+          "price": 134.9,
+          "note": "valor incluso codificação"
+        },
+        {
+          "name": "Controle Automotivo ( Taramps )",
+          "sub": "",
+          "price": 119.9,
+          "note": "valor incluso codificação"
+        },
+        {
+          "name": "Controle Automotivo ( Kostal )",
+          "sub": "",
+          "price": 149.9,
+          "note": "verificar disponibilidade"
+        },
+        {
+          "name": "Controle Automotivo ( Vectra antigo corujinha )",
+          "sub": "",
+          "price": 179.9,
+          "note": "verificar disponibilidade ( incluso codificação se o cliente tiver a senha, se precisar extrair ou pedir a senha adicionar 80,00 ao valor )"
+        },
+        {
+          "name": "Controle Automotivo (  Fiat cabeça na chave, positron )",
+          "sub": "",
+          "price": 124.9,
+          "note": "verificar disponibilidade / valor incluso codificação"
+        }
+      ]
+    },
+    {
+      "name": "MANUTENÇÕES (AUTO)",
+      "services": [
+        {
+          "name": "Ignição - Manutenção Bloco",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Manutenção bloco do Honda Fit, Civic, City (troca de paletas)",
+          "sub": "",
+          "price": 299.9,
+          "note": "Troca do kit de paletas"
+        },
+        {
+          "name": "Manutenção bloco do Honda (troca de paletas e chave nova)",
+          "sub": "",
+          "price": 379.9,
+          "note": "Troca do kit de paletas + Chave nova (SEM chip novo, faz só a parte mecanica da chave, usa chip do cliente se tiver) Valido pros modelos: telecomando, lamina, ou gaveta"
+        },
+        {
+          "name": "Manutenção bloco Jetta (todos até 2024)",
+          "sub": "",
+          "price": 379.9,
+          "note": ""
+        },
+        {
+          "name": "Manutenção bloco Hyundai i30, Azera (antigos)",
+          "sub": "",
+          "price": 369.9,
+          "note": ""
+        },
+        {
+          "name": "Manutenção bloco Renaut, Clio, Kwid, Kangoo, Sandero",
+          "sub": "",
+          "price": 379.9,
+          "note": "Remover a trava de volante, causador de problemas, avisar ao cliente"
+        },
+        {
+          "name": "Manutenção bloco GM vectra , Elite, Gt, Elegance",
+          "sub": "",
+          "price": 349.9,
+          "note": "Remover a trava de volante, causador de problemas, avisar ao cliente"
+        },
+        {
+          "name": "Troca do excentrico (bolacha) Fiat, Palio, Uno, Strada",
+          "sub": "",
+          "price": 229.9,
+          "note": ""
+        },
+        {
+          "name": "Troca do excentrico latão (curto curto)",
+          "sub": "",
+          "price": 229.9,
+          "note": ""
+        },
+        {
+          "name": "Troca do excentrico (bucha) Fox, Gol G5",
+          "sub": "",
+          "price": 229.9,
+          "note": ""
+        },
+        {
+          "name": "Só a Mão de obra",
+          "sub": "",
+          "price": 150,
+          "note": "depende do veículo e complexidade do serviço, valor só da mão de obra"
+        },
+        {
+          "name": "Ignição - Comutador Partida",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Troca comutador partida - Fiat, Palio, Uno, Strada",
+          "sub": "",
+          "price": 289.9,
+          "note": ""
+        },
+        {
+          "name": "Troca comutador partida - GM, Celta, Prisma",
+          "sub": "",
+          "price": 349.9,
+          "note": ""
+        },
+        {
+          "name": "Troca comutador partida - GM, Corsa Wind e Classic",
+          "sub": "",
+          "price": 274.9,
+          "note": ""
+        },
+        {
+          "name": "Troca comutador partida - GM, Vectra GT, Elite, Elegance",
+          "sub": "",
+          "price": 359.9,
+          "note": ""
+        },
+        {
+          "name": "Troca comutador partida - GM, Corsa frente Montana, Meriva, Montana",
+          "sub": "",
+          "price": 289.9,
+          "note": ""
+        },
+        {
+          "name": "Troca comutador partida - Volkswagen, G6, Amarok",
+          "sub": "",
+          "price": 349.9,
+          "note": ""
+        },
+        {
+          "name": "Troca comutador partida - Volkswagen, Gol (todos), Kombi, Parati, Santana, Fox",
+          "sub": "",
+          "price": 289.9,
+          "note": ""
+        },
+        {
+          "name": "Troca comutador partida - Ford, Courrier, Escort, Ka",
+          "sub": "",
+          "price": 349.9,
+          "note": ""
+        },
+        {
+          "name": "Só a Mão de obra",
+          "sub": "",
+          "price": 150,
+          "note": "depende do veículo e complexidade do serviço, valor só da mão de obra"
+        },
+        {
+          "name": "Ignição - Troca do Miolo",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Troca miolo ignição GM, Corsa (todos modelos), Celta, Meriva",
+          "sub": "",
+          "price": 249.9,
+          "note": ""
+        },
+        {
+          "name": "Troca miolo ignição GM, Celta, Prisma",
+          "sub": "",
+          "price": 249.9,
+          "note": ""
+        },
+        {
+          "name": "Troca miolo ignição Vectra chave pantografica (antigo até 2004)",
+          "sub": "",
+          "price": 269.9,
+          "note": ""
+        },
+        {
+          "name": "Troca miolo ignição Uno (antigo)",
+          "sub": "",
+          "price": 229.9,
+          "note": ""
+        },
+        {
+          "name": "Troca miolo ignição Gol (chave comum yale) geralmente até 2001",
+          "sub": "",
+          "price": 249.9,
+          "note": ""
+        },
+        {
+          "name": "Troca miolo ignição Gol (chave pantográfica) Geração 3",
+          "sub": "",
+          "price": 289.9,
+          "note": ""
+        },
+        {
+          "name": "Só a Mão de obra",
+          "sub": "",
+          "price": 150,
+          "note": "depende do veículo e complexidade do serviço, valor só da mão de obra"
+        },
+        {
+          "name": "Porta Malas",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Abertura porta malas (só abrir) valor com carro na loja",
+          "sub": "",
+          "price": 70,
+          "note": ""
+        },
+        {
+          "name": "Troca da fechadura porta mala VW Gol G5, Fox / Fiat, Palio, Uno",
+          "sub": "",
+          "price": 294.9,
+          "note": "inlcui a abertura"
+        },
+        {
+          "name": "Troca fechadura porta mala GM, Corsa, Celta",
+          "sub": "",
+          "price": 294.9,
+          "note": "inlcui a abertura"
+        },
+        {
+          "name": "Regulagem batente",
+          "sub": "",
+          "price": 70,
+          "note": "pode variar dependendo a complexidade"
+        },
+        {
+          "name": "Só a Mão de obra",
+          "sub": "",
+          "price": 150,
+          "note": "depende do veículo e complexidade do serviço, valor só da mão de obra"
+        },
+        {
+          "name": "Portas - Fechadura, Miolo interno, Cabo, Maçaneta",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Só Abertura de porta travada (fechadura com problema)",
+          "sub": "",
+          "price": 70,
+          "note": "Só abrir, por dentro do forro de porta"
+        },
+        {
+          "name": "Só a Mão de obra",
+          "sub": "",
+          "price": 150,
+          "note": "depende do veículo e complexidade do serviço, valor só da mão de obra"
+        },
+        {
+          "name": "Troca de Cabos ou Maçanetas internas - veículos comuns até 2014 (corsa, fiesta, palio, gol, saveiro, etc)",
+          "sub": "",
+          "price": 169.9,
+          "note": "Valor com peça inclusa"
+        },
+        {
+          "name": "Troca de Maçanetas Externas - veículos comuns até 2014 (corsa, Ford ka, palio, gol, saveiro, etc)",
+          "sub": "",
+          "price": 189.9,
+          "note": ""
+        },
+        {
+          "name": "Troca de fechadura - Linha Ford (ANTIGOS) até 2009 (Fiesta, Eco sport, Escort, Ford ka)",
+          "sub": "",
+          "price": 379.9,
+          "note": ""
+        },
+        {
+          "name": "Manutenção Fechadura Portas - Linha Ford até 2015 (New Fiesta, New Eco sport, New Ka, Ranger)",
+          "sub": "",
+          "price": 399.9,
+          "note": "Fazemos a manutenção na original do cliente, se caso não der, ou não ficar bom,tem que por nova, aviar antes o processo)"
+        },
+        {
+          "name": "Troca de fechadura Portas GM Corsa, Celta",
+          "sub": "",
+          "price": 369.9,
+          "note": ""
+        },
+        {
+          "name": "Troca de fechadura Portas GM Zafira, Meriva, Montana, Astra, Vectra",
+          "sub": "",
+          "price": 389.9,
+          "note": ""
+        },
+        {
+          "name": "Troca do Miolo Interno Porta Hyundai HB20 - Até 2018 (Antigo)",
+          "sub": "",
+          "price": 269.9,
+          "note": "Só miolo interno, mantem na chave original"
+        },
+        {
+          "name": "Troca do Miolo Interno Porta - maioria dos veiculos - Até 2015 (Antigos)",
+          "sub": "",
+          "price": 239.9,
+          "note": "Só miolo interno, mantem na chave original"
+        }
+      ]
+    },
+    {
+      "name": "CÓPIAS VEÍCULOS SECA (Sem alarm",
+      "services": [
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 250,
+          "note": "Se não for codificado 150,00"
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 250,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 350,
+          "note": "Sistema novo, exige 2 chaves"
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": "Servidor em alguns casos"
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 250,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 250,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 270,
+          "note": "Perde chave = complicado"
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 250,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 250,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 350,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 890,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 280,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 280,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 650,
+          "note": "Cuidado com BCM"
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 280,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 350,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 650,
+          "note": "Modelo bananinha de presença!"
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 990,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 280,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 350,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 1100,
+          "note": "Alta segurança"
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 280,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 780,
+          "note": "Chave Presencial"
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 1100,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 270,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 250,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 250,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 470,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 250,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 650,
+          "note": "Chave presencial"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 650,
+          "note": "Chave presencial"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 250,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 250,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 250,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Chave presencial (limitado)"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença (limitado sem IM608)"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença (limitado)"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença (limitado)"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença (limitado)"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença (limitado)"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": "4A via OBD, senha obrigatória, usar estabilizador"
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": "4A via OBD, senha obrigatória, usar estabilizador"
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": "Keyless em algumas versões, usar estabilizador"
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": "4A via OBD, senha obrigatória"
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": "Keyless faz via Autel; O canivete exige BCM fora, cuidado, remova o cabo da bateria após 10 minutos depois de desligar o carro."
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": "Keyless faz via Autel; O canivete exige BCM fora, cuidado, remova o cabo da bateria após 10 minutos depois de desligar o carro."
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": "Keyless faz com Autel KM100 comum, BCM sensível"
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Pede PIN em alguns casos"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença, limitado"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Pode pedir reset"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença, limitado"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Reset em perda total"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Pode pedir reset"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença (limitado)"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": "BSI sensível, usar estabilizador"
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": "Pede PIN obrigatório"
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": "PIN obrigatório"
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Pede PIN"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Presença em algumas versões"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Presença em versões novas"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Cartão (não é chave)"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Cartão Renault"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Cartão"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Sem CAN"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Plataforma 5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C / painel VDO"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C, painel NEC/VDO"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "MQB, presença em versões"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "MQB, presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "MQB"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "MQB, presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C atualizado"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": "Estabilizador bateria, Fúsivel da tomada OBD"
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": "BSI sensível, usar estabilizador"
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": "PIN obrigatório"
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "name": "CANIVETE COMPLETA ",
+      "services": [
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 450,
+          "note": "Sistema novo, exige 2 chaves"
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": "Servidor em alguns casos"
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 450,
+          "note": "Perde chave = complicado"
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 480,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 650,
+          "note": "Cuidado com BCM"
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 850,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": "Alta segurança"
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Ford",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 450,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 470,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Chave presencial"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Chave presencial"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Chave presencial (limitado)"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença (limitado sem IM608)"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença (limitado)"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença (limitado)"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença (limitado)"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": "Presença (limitado)"
+        },
+        {
+          "name": "Chevrolet",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": "4A via OBD, senha obrigatória, usar estabilizador"
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": "4A via OBD, senha obrigatória, usar estabilizador"
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": "Keyless em algumas versões, usar estabilizador"
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": "4A via OBD, senha obrigatória"
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": "Keyless faz via Autel; O canivete exige BCM fora, cuidado, remova o cabo da bateria após 10 minutos depois de desligar o carro."
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": "Keyless faz via Autel; O canivete exige BCM fora, cuidado, remova o cabo da bateria após 10 minutos depois de desligar o carro."
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": "Keyless faz com Autel KM100 comum, BCM sensível"
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Fiat",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Pede PIN em alguns casos"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença, limitado"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Honda",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Pode pedir reset"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença, limitado"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Reset em perda total"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Pode pedir reset"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença (limitado)"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Toyota",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": "BSI sensível, usar estabilizador"
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": "Pede PIN obrigatório"
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": "PIN obrigatório"
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Citroen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Pede PIN"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Presença em algumas versões"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 650,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 650,
+          "note": "Presença em versões novas"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Cartão (não é chave)"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Cartão Renault"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Cartão"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Renault",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Sem CAN"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Plataforma 5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C / painel VDO"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C, painel NEC/VDO"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "MQB, presença em versões"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "MQB, presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "MQB"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "MQB, presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C atualizado"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": "5C"
+        },
+        {
+          "name": "Volkswagen",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": "Estabilizador bateria, Fúsivel da tomada OBD"
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Hyundai",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": "BSI sensível, usar estabilizador"
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": "PIN obrigatório"
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": "Presença"
+        },
+        {
+          "name": "Peugeot",
+          "sub": "",
+          "price": 0,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "name": "CARCAÇAS OCA (Auto)",
+      "services": [
+        {
+          "name": "Carcaça canivete todos os modelos - até 2023",
+          "sub": "",
+          "price": 150,
+          "note": "Exceto veículos de luxo, Porsche, BMW, Mercedes, Etc"
+        },
+        {
+          "name": "Carcaça canivete todos os modelos - 2024 até 2026",
+          "sub": "",
+          "price": 179.9,
+          "note": "Exceto veículos de luxo, Porsche, BMW, Mercedes, Etc"
+        },
+        {
+          "name": "Carcaça Controle Automotivo ( Positron )",
+          "sub": "",
+          "price": 40,
+          "note": ""
+        },
+        {
+          "name": "Carcaça Controle Automotivo ( Look Out )",
+          "sub": "",
+          "price": 40,
+          "note": ""
+        },
+        {
+          "name": "Carcaça Controle Automotivo ( Olimpus )",
+          "sub": "",
+          "price": 40,
+          "note": ""
+        },
+        {
+          "name": "Carcaça Controle Automotivo ( Ford 4 e 3 botões )",
+          "sub": "",
+          "price": 40,
+          "note": ""
+        },
+        {
+          "name": "Carcaça Controle Automotivo ( Toyota antigo )",
+          "sub": "",
+          "price": 40,
+          "note": ""
+        },
+        {
+          "name": "Carcaça Controle Automotivo ( Taramps )",
+          "sub": "",
+          "price": 40,
+          "note": ""
+        },
+        {
+          "name": "Carcaça Controle Automotivo ( Kostal )",
+          "sub": "",
+          "price": 40,
+          "note": "verificar disponibilidade"
+        },
+        {
+          "name": "Carcaça Controle Automotivo ( Vectra antigo corujinha )",
+          "sub": "",
+          "price": 40,
+          "note": ""
+        },
+        {
+          "name": "Carcaça Controle Automotivo (  Fiat cabeça na chave, positron )",
+          "sub": "",
+          "price": 40,
+          "note": ""
+        },
+        {
+          "name": "Carcaça chaves presença maioria dos modelos - 2024 até 2026",
+          "sub": "",
+          "price": 249.9,
+          "note": "Valor com a lâmina cortada, verificar se está no nosso portifólio"
+        },
+        {
+          "name": "Carcaça chaves presença maioria dos modelos - até 2023",
+          "sub": "",
+          "price": 219.9,
+          "note": "Ofertar Sêm a Lâmina> oferecer ela como presente bônus"
+        }
       ]
     }
   ]

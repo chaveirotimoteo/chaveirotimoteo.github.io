@@ -87,6 +87,11 @@
       .trim();
   }
 
+  // Cada aba vira uma categoria. Dentro da aba, uma linha "divisória" (só a
+  // coluna do nome/veículo preenchida, todo o resto vazio) inicia uma nova
+  // subcategoria (ex: uma montadora) até a próxima divisória ou o fim da aba.
+  // Qualquer coluna extra além de nome/sub/preço/observação é reconhecida
+  // automaticamente e exibida como informação adicional no card.
   function parseWorkbook(wb) {
     const categories = [];
 
@@ -95,49 +100,66 @@
       const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
       if (!rows.length) return;
 
-      const header = rows[0].map(normHeader);
-      const colName = header.findIndex((h) => /servic|item|produto|descri|nome/.test(h));
+      const rawHeader = rows[0].map((h) => (h || '').toString().trim());
+      const header = rawHeader.map(normHeader);
+      const colName = header.findIndex((h) => /servic|item|produto|descri|nome|veic/.test(h));
       const colSub = header.findIndex((h) => /sub|variac|tamanho|opcao|detalhe/.test(h));
       const colPrice = header.findIndex((h) => /prec|valor/.test(h));
       const colNote = header.findIndex((h) => /obs|nota/.test(h));
 
       const nameIdx = colName >= 0 ? colName : 0;
       const priceIdx = colPrice >= 0 ? colPrice : header.length - 1;
+      const knownIdx = new Set([nameIdx, colSub, priceIdx, colNote].filter((i) => i >= 0));
+      const extraIdx = header.map((_, i) => i).filter((i) => !knownIdx.has(i) && rawHeader[i]);
 
-      const services = [];
+      const cellAt = (row, idx) => (idx >= 0 && row[idx] !== undefined ? row[idx].toString().trim() : '');
+
+      const groups = [];
+      let currentGroup = { name: '', services: [] };
       let lastName = '';
 
       for (let i = 1; i < rows.length; i++) {
         const row = rows[i];
         if (!row || row.every((c) => c === '' || c === undefined)) continue;
 
-        let name = (row[nameIdx] || '').toString().trim();
-        const sub = colSub >= 0 ? (row[colSub] || '').toString().trim() : '';
-        const note = colNote >= 0 ? (row[colNote] || '').toString().trim() : '';
-        let rawPrice = row[priceIdx];
+        const name = cellAt(row, nameIdx);
+        const sub = cellAt(row, colSub);
+        const note = cellAt(row, colNote);
+        const rawPrice = cellAt(row, priceIdx);
+        const extras = extraIdx
+          .map((idx) => ({ label: rawHeader[idx], value: cellAt(row, idx) }))
+          .filter((f) => f.value);
 
-        if (!name && lastName) {
-          name = lastName;
-        } else if (name) {
-          lastName = name;
+        const othersEmpty = !sub && !note && !rawPrice && extras.length === 0;
+
+        if (name && othersEmpty) {
+          if (currentGroup.services.length > 0) groups.push(currentGroup);
+          currentGroup = { name, services: [] };
+          lastName = '';
+          continue;
         }
-        if (!name) continue;
+
+        let itemName = name;
+        if (!itemName && lastName) {
+          itemName = lastName;
+        } else if (itemName) {
+          lastName = itemName;
+        }
+        if (!itemName) continue;
 
         let price = 0;
-        if (typeof rawPrice === 'number') {
-          price = rawPrice;
-        } else if (typeof rawPrice === 'string' && rawPrice.trim()) {
+        if (rawPrice) {
           const cleaned = rawPrice.replace(/[^\d,.-]/g, '').replace(/\.(?=\d{3},)/g, '').replace(',', '.');
           const n = parseFloat(cleaned);
           price = isNaN(n) ? 0 : n;
         }
 
-        services.push({ name, sub, price, note });
+        currentGroup.services.push({ name: itemName, sub, price, note, fields: extras });
       }
+      if (currentGroup.services.length > 0) groups.push(currentGroup);
+      if (!groups.length) return;
 
-      if (services.length) {
-        categories.push({ name: sheetName, services });
-      }
+      categories.push({ name: sheetName, groups });
     });
 
     return { updatedAt: new Date().toISOString(), categories };
@@ -147,15 +169,22 @@
     const money = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
     let html = '';
     data.categories.forEach((cat) => {
-      html += '<div class="section-title" style="margin-top:16px;font-size:.9rem">' + escapeHtml(cat.name) + ' (' + cat.services.length + ' itens)</div>';
-      html += '<table class="preview"><thead><tr><th>Serviço</th><th>Sub</th><th>Preço</th></tr></thead><tbody>';
-      cat.services.slice(0, 8).forEach((s) => {
-        html += '<tr><td>' + escapeHtml(s.name) + '</td><td>' + escapeHtml(s.sub) + '</td><td>' + (s.price ? money.format(s.price) : '-') + '</td></tr>';
+      const total = cat.groups.reduce((n, g) => n + g.services.length, 0);
+      html += '<div class="section-title" style="margin-top:16px;font-size:.9rem">' + escapeHtml(cat.name) + ' (' + total + ' itens' + (cat.groups.length > 1 || cat.groups[0].name ? ', ' + cat.groups.length + ' subcategorias' : '') + ')</div>';
+      cat.groups.forEach((group) => {
+        if (group.name) {
+          html += '<div style="font-size:.78rem;font-weight:700;margin-top:8px;color:var(--muted)">' + escapeHtml(group.name) + '</div>';
+        }
+        html += '<table class="preview"><thead><tr><th>Nome</th><th>Preço</th><th>Extras</th></tr></thead><tbody>';
+        group.services.slice(0, 6).forEach((s) => {
+          const extras = (s.fields || []).map((f) => f.label + ': ' + f.value).join(' · ');
+          html += '<tr><td>' + escapeHtml(s.name) + (s.sub ? ' <span style="color:var(--muted)">(' + escapeHtml(s.sub) + ')</span>' : '') + '</td><td>' + (s.price ? money.format(s.price) : '-') + '</td><td>' + escapeHtml(extras) + '</td></tr>';
+        });
+        if (group.services.length > 6) {
+          html += '<tr><td colspan="3">+' + (group.services.length - 6) + ' itens...</td></tr>';
+        }
+        html += '</tbody></table>';
       });
-      if (cat.services.length > 8) {
-        html += '<tr><td colspan="3">+' + (cat.services.length - 8) + ' itens...</td></tr>';
-      }
-      html += '</tbody></table>';
     });
     preview.innerHTML = html || '<div class="status err">Nenhum dado reconhecido nas abas.</div>';
   }

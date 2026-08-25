@@ -17,6 +17,68 @@
       .toLowerCase();
   }
 
+  function matchesQuery(service, cat, group, q) {
+    if (!q) return true;
+    if (normalize(service.name).includes(q)) return true;
+    if (normalize(service.sub).includes(q)) return true;
+    if (normalize(service.note).includes(q)) return true;
+    if (normalize(cat.name).includes(q)) return true;
+    if (normalize(group.name).includes(q)) return true;
+    return (service.fields || []).some(
+      (f) => normalize(f.label).includes(q) || normalize(f.value).includes(q)
+    );
+  }
+
+  function renderItem(s) {
+    const item = document.createElement('div');
+    item.className = 'item';
+
+    const info = document.createElement('div');
+    info.className = 'info';
+
+    const name = document.createElement('div');
+    name.className = 'name';
+    name.textContent = s.name;
+    info.appendChild(name);
+
+    if (s.sub) {
+      const sub = document.createElement('div');
+      sub.className = 'sub';
+      sub.textContent = s.sub;
+      info.appendChild(sub);
+    }
+
+    if (s.fields && s.fields.length) {
+      const fieldsWrap = document.createElement('div');
+      fieldsWrap.className = 'fields';
+      s.fields.forEach((f) => {
+        const chip = document.createElement('span');
+        chip.className = 'field-chip';
+        const b = document.createElement('b');
+        b.textContent = f.label + ': ';
+        chip.appendChild(b);
+        chip.appendChild(document.createTextNode(f.value));
+        fieldsWrap.appendChild(chip);
+      });
+      info.appendChild(fieldsWrap);
+    }
+
+    if (s.note) {
+      const note = document.createElement('div');
+      note.className = 'note';
+      note.textContent = s.note;
+      info.appendChild(note);
+    }
+
+    const price = document.createElement('div');
+    price.className = 'price';
+    price.textContent = typeof s.price === 'number' && s.price > 0 ? money.format(s.price) : (s.price || 'Consultar');
+
+    item.appendChild(info);
+    item.appendChild(price);
+    return item;
+  }
+
   function render() {
     const q = normalize(searchEl.value.trim());
     mainEl.innerHTML = '';
@@ -26,16 +88,12 @@
     data.categories.forEach((cat) => {
       if (activeCategory !== 'Todas' && cat.name !== activeCategory) return;
 
-      const matchedServices = (cat.services || []).filter((s) => {
-        if (!q) return true;
-        return (
-          normalize(s.name).includes(q) ||
-          normalize(s.sub).includes(q) ||
-          normalize(cat.name).includes(q)
-        );
+      const groupsOut = [];
+      (cat.groups || []).forEach((group) => {
+        const matched = (group.services || []).filter((s) => matchesQuery(s, cat, group, q));
+        if (matched.length) groupsOut.push({ name: group.name, services: matched });
       });
-
-      if (matchedServices.length === 0) return;
+      if (!groupsOut.length) return;
       anyResult = true;
 
       const section = document.createElement('section');
@@ -45,38 +103,20 @@
       h2.textContent = cat.name;
       section.appendChild(h2);
 
-      const card = document.createElement('div');
-      card.className = 'card';
+      groupsOut.forEach((group) => {
+        if (group.name) {
+          const gTitle = document.createElement('div');
+          gTitle.className = 'group-title';
+          gTitle.textContent = group.name;
+          section.appendChild(gTitle);
+        }
 
-      matchedServices.forEach((s) => {
-        const item = document.createElement('div');
-        item.className = 'item';
-        const left = document.createElement('div');
-        const name = document.createElement('div');
-        name.className = 'name';
-        name.textContent = s.name;
-        left.appendChild(name);
-        if (s.sub) {
-          const sub = document.createElement('div');
-          sub.className = 'sub';
-          sub.textContent = s.sub;
-          left.appendChild(sub);
-        }
-        if (s.note) {
-          const note = document.createElement('div');
-          note.className = 'note';
-          note.textContent = s.note;
-          left.appendChild(note);
-        }
-        const price = document.createElement('div');
-        price.className = 'price';
-        price.textContent = typeof s.price === 'number' && s.price > 0 ? money.format(s.price) : (s.price || 'Consultar');
-        item.appendChild(left);
-        item.appendChild(price);
-        card.appendChild(item);
+        const card = document.createElement('div');
+        card.className = 'card';
+        group.services.forEach((s) => card.appendChild(renderItem(s)));
+        section.appendChild(card);
       });
 
-      section.appendChild(card);
       mainEl.appendChild(section);
     });
 

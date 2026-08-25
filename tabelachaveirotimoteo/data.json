@@ -2,10 +2,32 @@
   "updatedAt": "2026-08-25T00:00:00.000Z",
   "categories": [
     {
-      "name": "Exemplo — Categoria 1",
-      "services": [
-        { "name": "Serviço de exemplo A", "sub": "", "price": 0, "note": "Suba sua planilha na área Admin para substituir estes dados" },
-        { "name": "Serviço de exemplo B", "sub": "Sublinha / variação", "price": 0, "note": "" }
+      "name": "Exemplo — Categoria simples",
+      "groups": [
+        {
+          "name": "",
+          "services": [
+            { "name": "Serviço de exemplo A", "sub": "", "price": 0, "note": "Suba sua planilha na área Admin para substituir estes dados", "fields": [] },
+            { "name": "Serviço de exemplo B", "sub": "Sublinha / variação", "price": 0, "note": "", "fields": [] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Exemplo — Categoria com subcategorias",
+      "groups": [
+        {
+          "name": "TOYOTA",
+          "services": [
+            { "name": "Corolla", "sub": "", "price": 0, "note": "", "fields": [{ "label": "Ano", "value": "2015-2020" }, { "label": "Sistema", "value": "Smart key" }] }
+          ]
+        },
+        {
+          "name": "HONDA",
+          "services": [
+            { "name": "Civic", "sub": "", "price": 0, "note": "", "fields": [{ "label": "Ano", "value": "2018-2023" }] }
+          ]
+        }
       ]
     }
   ]

@@ -5,7 +5,7 @@
   const REPO_OWNER = 'W77WWW';
   const REPO_NAME = 'W77WWW.github.io';
   const REPO_BRANCH = 'main';
-  const DATA_PATH = 'data.json';
+  const DATA_PATH = 'tabelachaveirotimoteo/data.json';
 
   const gate = document.getElementById('gate');
   const panel = document.getElementById('panel');

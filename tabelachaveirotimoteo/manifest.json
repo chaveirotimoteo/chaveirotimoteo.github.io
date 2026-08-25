@@ -1,12 +1,12 @@
 {
-  "name": "Tabela de Preços",
-  "short_name": "Preços",
+  "name": "Chaveiro Timóteo — Tabela de Preços",
+  "short_name": "Chaveiro Timóteo",
   "description": "Consulta rápida de categorias, serviços e preços",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0f4c3d",
-  "theme_color": "#0f4c3d",
+  "background_color": "#0a0a0b",
+  "theme_color": "#0a0a0b",
   "orientation": "portrait",
   "icons": [
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },

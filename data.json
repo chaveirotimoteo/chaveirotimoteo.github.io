@@ -1,0 +1,12 @@
+{
+  "updatedAt": "2026-08-25T00:00:00.000Z",
+  "categories": [
+    {
+      "name": "Exemplo — Categoria 1",
+      "services": [
+        { "name": "Serviço de exemplo A", "sub": "", "price": 0, "note": "Suba sua planilha na área Admin para substituir estes dados" },
+        { "name": "Serviço de exemplo B", "sub": "Sublinha / variação", "price": 0, "note": "" }
+      ]
+    }
+  ]
+}

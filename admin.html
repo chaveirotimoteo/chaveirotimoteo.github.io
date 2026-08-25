@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin — Tabela de Preços</title>
+<meta name="theme-color" content="#0f4c3d">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="admin">
+<div class="topbar">
+  <h1>Área administrativa</h1>
+</div>
+<main>
+
+  <section id="gate">
+    <p class="hint">Digite o código de acesso para continuar.</p>
+    <div class="field">
+      <label for="pin">Código de acesso</label>
+      <input type="password" id="pin" inputmode="numeric" placeholder="••••">
+    </div>
+    <button class="btn" id="gate-btn">Entrar</button>
+    <div id="gate-status"></div>
+  </section>
+
+  <section id="panel" style="display:none">
+    <div class="section-title">1. Token do GitHub</div>
+    <p class="hint">Necessário só uma vez por aparelho. Gere em github.com → Settings → Developer settings → Fine-grained tokens, com permissão de leitura/escrita em "Contents" apenas neste repositório.</p>
+    <div class="field">
+      <label for="token">Personal Access Token</label>
+      <input type="password" id="token" placeholder="ghp_..." autocomplete="off">
+    </div>
+    <button class="btn secondary" id="save-token">Salvar neste aparelho</button>
+    <div id="token-status"></div>
+
+    <div class="section-title">2. Enviar planilha atualizada</div>
+    <p class="hint">Cada aba da planilha vira uma categoria. Colunas reconhecidas automaticamente: nome do serviço, sub-item/variação, preço e observação.</p>
+    <label class="file-drop" id="drop">
+      <input type="file" id="file" accept=".xlsx,.xls" style="display:none">
+      <span id="drop-label">Toque para escolher o arquivo (.xlsx)</span>
+    </label>
+    <div id="parse-status"></div>
+    <div id="preview"></div>
+
+    <div class="section-title" id="publish-title" style="display:none">3. Publicar</div>
+    <button class="btn" id="publish-btn" style="display:none">Publicar atualização</button>
+    <div id="publish-status"></div>
+  </section>
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="assets/admin.js"></script>
+</body>
+</html>

@@ -78,6 +78,11 @@
     reader.readAsArrayBuffer(file);
   });
 
+  function capitalize(str) {
+    str = (str || '').toString().trim();
+    return str ? str.charAt(0).toUpperCase() + str.slice(1) : str;
+  }
+
   function normHeader(h) {
     return (h || '')
       .toString()
@@ -127,7 +132,7 @@
         const note = cellAt(row, colNote);
         const rawPrice = cellAt(row, priceIdx);
         const extras = extraIdx
-          .map((idx) => ({ label: rawHeader[idx], value: cellAt(row, idx) }))
+          .map((idx) => ({ label: capitalize(rawHeader[idx]), value: cellAt(row, idx) }))
           .filter((f) => f.value);
 
         const othersEmpty = !sub && !note && !rawPrice && extras.length === 0;

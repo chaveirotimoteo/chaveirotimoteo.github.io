@@ -164,7 +164,7 @@
       if (currentGroup.services.length > 0) groups.push(currentGroup);
       if (!groups.length) return;
 
-      categories.push({ name: sheetName, groups });
+      categories.push({ name: sheetName.trim(), groups });
     });
 
     return { updatedAt: new Date().toISOString(), categories };

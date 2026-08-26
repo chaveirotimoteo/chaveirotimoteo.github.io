@@ -17,16 +17,23 @@
       .toLowerCase();
   }
 
-  function matchesQuery(service, cat, group, q) {
-    if (!q) return true;
-    if (normalize(service.name).includes(q)) return true;
-    if (normalize(service.sub).includes(q)) return true;
-    if (normalize(service.note).includes(q)) return true;
-    if (normalize(cat.name).includes(q)) return true;
-    if (normalize(group.name).includes(q)) return true;
-    return (service.fields || []).some(
-      (f) => normalize(f.label).includes(q) || normalize(f.value).includes(q)
-    );
+  function buildHaystack(service, cat, group) {
+    const parts = [cat.name, group.name, service.name, service.sub, service.note];
+    (service.fields || []).forEach((f) => {
+      parts.push(f.label, f.value);
+    });
+    return normalize(parts.filter(Boolean).join(' '));
+  }
+
+  // "Inteligente": divide a busca em palavras e exige que TODAS apareçam em
+  // algum lugar do item (nome, categoria, subcategoria, observações ou
+  // colunas extras), em qualquer ordem — assim "canivete ford ka" ou
+  // "ford fusion" encontram o item mesmo se cada palavra estiver em um
+  // campo diferente.
+  function matchesQuery(service, cat, group, tokens) {
+    if (!tokens.length) return true;
+    const haystack = buildHaystack(service, cat, group);
+    return tokens.every((t) => haystack.includes(t));
   }
 
   function renderItem(s) {
@@ -80,7 +87,7 @@
   }
 
   function render() {
-    const q = normalize(searchEl.value.trim());
+    const tokens = normalize(searchEl.value.trim()).split(/\s+/).filter(Boolean);
     mainEl.innerHTML = '';
 
     let anyResult = false;
@@ -90,7 +97,7 @@
 
       const groupsOut = [];
       (cat.groups || []).forEach((group) => {
-        const matched = (group.services || []).filter((s) => matchesQuery(s, cat, group, q));
+        const matched = (group.services || []).filter((s) => matchesQuery(s, cat, group, tokens));
         if (matched.length) groupsOut.push({ name: group.name, services: matched });
       });
       if (!groupsOut.length) return;

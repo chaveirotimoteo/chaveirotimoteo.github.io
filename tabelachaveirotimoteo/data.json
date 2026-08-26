@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-26T02:10:14.337Z",
+  "updatedAt": "2026-08-26T02:12:13.769Z",
   "categories": [
     {
       "name": "GERAL",
@@ -640,7 +640,7 @@
       ]
     },
     {
-      "name": "CÓPIA AUTOS COMPLETA",
+      "name": "CÓPIA AUTOS (COMPLETA)",
       "groups": [
         {
           "name": "FORD",
@@ -10647,7 +10647,7 @@
       ]
     },
     {
-      "name": "CÓPIA AUTOS SECA SEM ALARME",
+      "name": "CÓPIA AUTOS SECA (SEM ALARME)",
       "groups": [
         {
           "name": "FORD",
@@ -20470,7 +20470,7 @@
       ]
     },
     {
-      "name": "CONTROLE CARCAÇA OCA",
+      "name": "CONTROLE (CARCAÇA OCA)",
       "groups": [
         {
           "name": "",
@@ -20543,7 +20543,7 @@
       ]
     },
     {
-      "name": "CANIVETE E PRESENÇA OCA",
+      "name": "CANIVETE E PRESENÇA (OCA)",
       "groups": [
         {
           "name": "Carcaça canivete",

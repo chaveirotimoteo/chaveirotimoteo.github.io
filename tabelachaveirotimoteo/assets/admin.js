@@ -2,8 +2,8 @@
   // Troque este código de acesso pelo que preferir.
   const ACCESS_PIN = '7777';
 
-  const REPO_OWNER = 'W77WWW';
-  const REPO_NAME = 'W77WWW.github.io';
+  const REPO_OWNER = 'chaveirotimoteo';
+  const REPO_NAME = 'chaveirotimoteo.github.io';
   const REPO_BRANCH = 'main';
   const DATA_PATH = 'tabelachaveirotimoteo/data.json';
 

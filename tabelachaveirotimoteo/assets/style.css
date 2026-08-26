@@ -8,6 +8,8 @@
   --primary:#d4af37;
   --primary-strong:#f2c94c;
   --primary-contrast:#0a0a0b;
+  --money:#2fd48d;
+  --money-strong:#4fe6a3;
   --border:#2a2a2d;
   --chip-bg:#1c1c1f;
   --chip-active-bg:#d4af37;
@@ -37,14 +39,14 @@ body{
   display:flex;align-items:center;gap:10px;margin:0 0 12px;
 }
 .brand .mark{
-  width:38px;height:38px;border-radius:9px;
+  width:42px;height:42px;border-radius:11px;
   background:#000000;
   border:1px solid var(--border);
   display:flex;align-items:center;justify-content:center;
-  font-size:18px;flex:0 0 auto;
+  flex:0 0 auto;
   box-shadow:0 2px 8px rgba(212,175,55,.25);
 }
-.brand .mark img{width:24px;height:24px;display:block;}
+.brand .mark img{width:30px;height:30px;display:block;}
 .brand h1{
   margin:0;font-size:1.08rem;font-weight:700;letter-spacing:.01em;
   background:linear-gradient(90deg,var(--primary-strong),#fff5da);
@@ -100,16 +102,29 @@ main{padding:8px 16px 40px;max-width:720px;margin:0 auto;}
   border:1px solid var(--border);
   border-left:3px solid var(--primary);
   border-radius:8px;
-  padding:6px 12px;
-  margin:12px 0 6px;
+  padding:8px 12px;
+  margin:10px 0;
   overflow-wrap:break-word;
   cursor:pointer;
-  display:flex;align-items:center;gap:6px;
+  display:flex;align-items:center;gap:8px;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
 }
 .group-title:hover{border-color:var(--primary);background:#22221c;}
+.group-title.expanded{border-left-color:var(--money);}
+.group-title .group-count{
+  margin-left:auto;font-size:.76rem;font-weight:600;color:var(--muted);
+  background:var(--bg);border:1px solid var(--border);border-radius:999px;
+  padding:1px 9px;flex:0 0 auto;
+}
 .group-title::after{
-  content:'›';
-  margin-left:auto;color:var(--primary);font-weight:700;
+  content:'▸';
+  color:var(--primary);font-size:.8rem;flex:0 0 auto;
+  transition:transform .15s ease;
+}
+.group-title.expanded::after{
+  content:'▾';
+  color:var(--money);
 }
 .card{
   background:var(--surface);
@@ -144,7 +159,7 @@ main{padding:8px 16px 40px;max-width:720px;margin:0 auto;}
 .item .price{
   font-weight:700;
   font-size:1.04rem;
-  color:var(--primary-strong);
+  color:var(--money-strong);
   white-space:nowrap;
   flex:0 0 auto;
 }

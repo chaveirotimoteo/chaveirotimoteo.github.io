@@ -8,6 +8,11 @@
 
   let data = { categories: [] };
   let activeCategory = 'Todas';
+  const expandedGroups = new Set();
+
+  function groupKey(catName, groupName) {
+    return catName + '::' + groupName;
+  }
 
   function normalize(str) {
     return (str || '')
@@ -151,16 +156,30 @@
 
       groupsOut.forEach((group) => {
         if (group.name) {
+          const key = groupKey(cat.name, group.name);
+          const isExpanded = tokens.length > 0 || expandedGroups.has(key);
+
           const gTitle = document.createElement('div');
-          gTitle.className = 'group-title';
-          gTitle.textContent = group.name;
-          gTitle.title = 'Toque para filtrar por ' + group.name;
+          gTitle.className = 'group-title' + (isExpanded ? ' expanded' : '');
+          gTitle.title = isExpanded ? 'Toque para recolher' : 'Toque para ver';
+
+          const gName = document.createElement('span');
+          gName.textContent = group.name;
+          gTitle.appendChild(gName);
+
+          const gCount = document.createElement('span');
+          gCount.className = 'group-count';
+          gCount.textContent = group.services.length;
+          gTitle.appendChild(gCount);
+
           gTitle.addEventListener('click', () => {
-            searchEl.value = group.name;
+            if (expandedGroups.has(key)) expandedGroups.delete(key);
+            else expandedGroups.add(key);
             render();
-            mainEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
           });
           section.appendChild(gTitle);
+
+          if (!isExpanded) return;
         }
 
         const card = document.createElement('div');

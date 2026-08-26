@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-26T02:05:45.356Z",
+  "updatedAt": "2026-08-26T02:10:14.337Z",
   "categories": [
     {
       "name": "GERAL",
@@ -10647,7 +10647,7 @@
       ]
     },
     {
-      "name": "CÓPIA AUTOS SECA S ALARME",
+      "name": "CÓPIA AUTOS SECA SEM ALARME",
       "groups": [
         {
           "name": "FORD",
@@ -20473,7 +20473,7 @@
       "name": "CONTROLE CARCAÇA OCA",
       "groups": [
         {
-          "name": "Automotivo",
+          "name": "",
           "services": [
             {
               "name": "Carcaça Controle Automotivo ( Positron )",
@@ -20565,7 +20565,7 @@
           ]
         },
         {
-          "name": "Carcaça chaves de presença",
+          "name": "Carcaça chave de presença",
           "services": [
             {
               "name": "Carcaça chaves presença dos modelos - até 2023",
@@ -20589,7 +20589,7 @@
       "name": "SMD E REPAROS",
       "groups": [
         {
-          "name": "REPAROS SMD",
+          "name": "",
           "services": [
             {
               "name": "Troca do botão SMD Comum (2 pernas)",

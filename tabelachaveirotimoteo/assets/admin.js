@@ -3,7 +3,7 @@
   const ACCESS_PIN = '7777';
 
   const REPO_OWNER = 'chaveirotimoteo';
-  const REPO_NAME = 'W77WWW.github.io';
+  const REPO_NAME = 'chaveirotimoteo.github.io';
   const REPO_BRANCH = 'main';
   const DATA_PATH = 'tabelachaveirotimoteo/data.json';
 

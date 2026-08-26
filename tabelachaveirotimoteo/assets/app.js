@@ -25,15 +25,42 @@
     return normalize(parts.filter(Boolean).join(' '));
   }
 
+  function isYearField(label) {
+    return normalize(label) === 'ano';
+  }
+
+  // Um valor de "Ano" pode ser um ano único ("2015") ou uma faixa
+  // ("2000-2007", "2000 a 2007", "2000/2007"...). Extrai o menor e o maior
+  // ano encontrado no texto para saber se um ano digitado cai dentro dele.
+  function yearRange(text) {
+    const nums = (text || '').match(/\d{4}/g);
+    if (!nums || !nums.length) return null;
+    const values = nums.map(Number);
+    return { min: Math.min(...values), max: Math.max(...values) };
+  }
+
+  function yearMatches(token, service) {
+    const year = parseInt(token, 10);
+    return (service.fields || []).some((f) => {
+      if (!isYearField(f.label)) return false;
+      const range = yearRange(f.value);
+      return range && year >= range.min && year <= range.max;
+    });
+  }
+
   // "Inteligente": divide a busca em palavras e exige que TODAS apareçam em
   // algum lugar do item (nome, categoria, subcategoria, observações ou
   // colunas extras), em qualquer ordem — assim "canivete ford ka" ou
   // "ford fusion" encontram o item mesmo se cada palavra estiver em um
-  // campo diferente.
+  // campo diferente. Um token de 4 dígitos (ex: "2009") também casa se cair
+  // dentro de uma faixa de anos do item (ex: coluna Ano = "2006-2012").
   function matchesQuery(service, cat, group, tokens) {
     if (!tokens.length) return true;
     const haystack = buildHaystack(service, cat, group);
-    return tokens.every((t) => haystack.includes(t));
+    return tokens.every((t) => {
+      if (haystack.includes(t)) return true;
+      return /^\d{4}$/.test(t) && yearMatches(t, service);
+    });
   }
 
   function renderItem(s) {
@@ -43,10 +70,22 @@
     const info = document.createElement('div');
     info.className = 'info';
 
-    const name = document.createElement('div');
+    const otherFields = (s.fields || []).filter((f) => !isYearField(f.label));
+    const yearField = (s.fields || []).find((f) => isYearField(f.label));
+
+    const nameRow = document.createElement('div');
+    nameRow.className = 'name-row';
+    const name = document.createElement('span');
     name.className = 'name';
     name.textContent = s.name;
-    info.appendChild(name);
+    nameRow.appendChild(name);
+    if (yearField) {
+      const year = document.createElement('span');
+      year.className = 'year-badge';
+      year.textContent = yearField.value;
+      nameRow.appendChild(year);
+    }
+    info.appendChild(nameRow);
 
     if (s.sub) {
       const sub = document.createElement('div');
@@ -55,10 +94,10 @@
       info.appendChild(sub);
     }
 
-    if (s.fields && s.fields.length) {
+    if (otherFields.length) {
       const fieldsWrap = document.createElement('div');
       fieldsWrap.className = 'fields';
-      s.fields.forEach((f) => {
+      otherFields.forEach((f) => {
         const chip = document.createElement('span');
         chip.className = 'field-chip';
         const b = document.createElement('b');
@@ -115,6 +154,12 @@
           const gTitle = document.createElement('div');
           gTitle.className = 'group-title';
           gTitle.textContent = group.name;
+          gTitle.title = 'Toque para filtrar por ' + group.name;
+          gTitle.addEventListener('click', () => {
+            searchEl.value = group.name;
+            render();
+            mainEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
           section.appendChild(gTitle);
         }
 

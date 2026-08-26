@@ -103,6 +103,13 @@ main{padding:8px 16px 40px;max-width:720px;margin:0 auto;}
   padding:6px 12px;
   margin:12px 0 6px;
   overflow-wrap:break-word;
+  cursor:pointer;
+  display:flex;align-items:center;gap:6px;
+}
+.group-title:hover{border-color:var(--primary);background:#22221c;}
+.group-title::after{
+  content:'›';
+  margin-left:auto;color:var(--primary);font-weight:700;
 }
 .card{
   background:var(--surface);
@@ -118,7 +125,13 @@ main{padding:8px 16px 40px;max-width:720px;margin:0 auto;}
 }
 .item + .item{border-top:1px solid var(--border);}
 .item .info{flex:1 1 auto;min-width:0;}
+.item .name-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:7px;}
 .item .name{font-weight:600;font-size:1.02rem;line-height:1.3;color:var(--text);overflow-wrap:anywhere;}
+.item .year-badge{
+  font-size:.8rem;font-weight:600;color:var(--primary-strong);
+  background:var(--surface-2);border:1px solid var(--border);
+  border-radius:6px;padding:1px 7px;white-space:nowrap;
+}
 .item .sub{font-size:.88rem;color:var(--muted);margin-top:2px;overflow-wrap:anywhere;}
 .item .note{font-size:.89rem;color:var(--muted);margin-top:3px;font-style:italic;overflow-wrap:anywhere;}
 .item .fields{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}

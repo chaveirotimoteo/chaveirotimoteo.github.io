@@ -5,8 +5,8 @@
   // apps-script/Code.gs (constantes SECRET e ADMIN_PIN).
   const CONFIG = {
     API_URL: 'https://script.google.com/macros/s/AKfycbwlZUq4YClqfq9UeHXB8qPLe058FpEVZyD1yrZNpZ_ge937eo42yXoVOGZ4jBn9Bwvx/exec',
-    APP_SECRET: 'Acede2101*',
-    ADMIN_PIN: '191215',
+    APP_SECRET: 'senha3457',
+    ADMIN_PIN: 'senha3457',
     // Para incluir mais técnicos, basta adicionar o nome à lista.
     TECNICOS: ['Lucas', 'Giovani'],
   };

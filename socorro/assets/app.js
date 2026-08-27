@@ -7,7 +7,8 @@
     API_URL: 'https://script.google.com/macros/s/AKfycbwlZUq4YClqfq9UeHXB8qPLe058FpEVZyD1yrZNpZ_ge937eo42yXoVOGZ4jBn9Bwvx/exec',
     APP_SECRET: 'Acede2101*',
     ADMIN_PIN: '191215',
-    TECNICOS: ['Lucas', 'Giovani', 'Técnico 3'],
+    // Para incluir mais técnicos, basta adicionar o nome à lista.
+    TECNICOS: ['Lucas', 'Giovani'],
   };
 
   const STATUS_LIST = ['Pendente', 'Devedor', 'Finalizado'];

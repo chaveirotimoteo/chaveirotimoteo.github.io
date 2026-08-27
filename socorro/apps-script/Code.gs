@@ -6,8 +6,12 @@
  */
 
 var SHEET_NAME = 'Socorros';
+// ATENÇÃO: os valores abaixo são apenas exemplos. Os valores reais ficam
+// só no editor do Apps Script (script.google.com) e NÃO devem ser copiados
+// para cá — este repositório é público. Ao colar este arquivo no Apps
+// Script, troque os dois pelos valores reais, iguais aos de assets/app.js.
 var SECRET = 'troque-este-segredo'; // igual ao APP_SECRET em assets/app.js
-var ADMIN_PIN = '7777'; // igual ao ADMIN_PIN em assets/app.js
+var ADMIN_PIN = '0000'; // igual ao ADMIN_PIN em assets/app.js
 var PHOTOS_FOLDER = 'Socorro - Fotos';
 
 var COLUMNS = [

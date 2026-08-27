@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chaveiro Timóteo — Controle de Socorro</title>
+<meta name="theme-color" content="#0a0a0b">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">
+    <div class="mark"><img src="assets/logo.svg" alt="Chaveiro Timóteo" width="24" height="24"></div>
+    <div>
+      <h1>Chaveiro Timóteo</h1>
+      <p class="tagline">Controle de socorro</p>
+    </div>
+  </div>
+</div>
+
+<div class="tabs" id="tabs"></div>
+
+<main id="main">
+  <div class="empty" id="loading">Carregando atendimentos...</div>
+</main>
+
+<button class="fab" id="fab-new" aria-label="Novo atendimento">+</button>
+
+<!-- Modal: novo atendimento -->
+<div class="modal-backdrop" id="modal-new">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Novo atendimento</h2>
+      <button class="icon-btn" data-close>&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Categoria</label>
+        <div class="segmented" id="f-categoria">
+          <button type="button" data-value="Automotivo" class="active">Automotivo</button>
+          <button type="button" data-value="Residencial">Residencial</button>
+        </div>
+      </div>
+      <div class="field" id="f-tipo-wrap">
+        <label>Tipo</label>
+        <div class="segmented" id="f-tipo">
+          <button type="button" data-value="Carro" class="active">Carro</button>
+          <button type="button" data-value="Moto">Moto</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-tecnico">Técnico responsável</label>
+        <select id="f-tecnico"></select>
+      </div>
+      <div class="field">
+        <label for="f-cliente">Cliente</label>
+        <input type="text" id="f-cliente" placeholder="Nome do cliente">
+      </div>
+      <div class="field">
+        <label for="f-telefone">Telefone</label>
+        <input type="tel" id="f-telefone" placeholder="(00) 00000-0000">
+      </div>
+      <div class="field">
+        <label for="f-endereco">Endereço</label>
+        <input type="text" id="f-endereco" placeholder="Rua, número, bairro, referência">
+      </div>
+      <div class="field">
+        <label for="f-descricao">Descrição do serviço</label>
+        <textarea id="f-descricao" rows="3" placeholder="O que foi solicitado"></textarea>
+      </div>
+      <div class="field">
+        <label for="f-valor">Valor orçado (R$)</label>
+        <input type="number" id="f-valor" inputmode="decimal" placeholder="0,00" step="0.01" min="0">
+      </div>
+      <div class="field">
+        <label for="f-previsao">Previsão de finalização</label>
+        <input type="datetime-local" id="f-previsao">
+      </div>
+      <div class="field">
+        <label for="f-fotos">Fotos</label>
+        <label class="file-drop" for="f-fotos" id="f-fotos-label">Toque para adicionar fotos</label>
+        <input type="file" id="f-fotos" accept="image/*" capture="environment" multiple style="display:none">
+      </div>
+      <div id="new-status"></div>
+      <button class="btn" id="f-submit">Registrar atendimento</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: detalhe / edição -->
+<div class="modal-backdrop" id="modal-detail">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Atendimento</h2>
+      <button class="icon-btn" data-close>&times;</button>
+    </div>
+    <div class="modal-body" id="detail-body"></div>
+  </div>
+</div>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -4,9 +4,9 @@
   // URL do Web App. O SECRET e o PIN precisam ser IDÊNTICOS aos definidos em
   // apps-script/Code.gs (constantes SECRET e ADMIN_PIN).
   const CONFIG = {
-    API_URL: 'COLE_AQUI_A_URL_DO_APPS_SCRIPT',
-    APP_SECRET: 'troque-este-segredo',
-    ADMIN_PIN: '7777',
+    API_URL: 'https://script.google.com/macros/s/AKfycbwlZUq4YClqfq9UeHXB8qPLe058FpEVZyD1yrZNpZ_ge937eo42yXoVOGZ4jBn9Bwvx/exec',
+    APP_SECRET: 'Acede2101*',
+    ADMIN_PIN: '191215',
     TECNICOS: ['Timóteo', 'Técnico 2', 'Técnico 3'],
   };
 

@@ -107,6 +107,9 @@ body{
 
 main{padding:8px 16px 96px;max-width:720px;margin:0 auto;}
 .empty{text-align:center;color:var(--muted);padding:60px 20px;font-size:.98rem;}
+.historico-footer{margin-top:18px;text-align:center;}
+.historico-footer .hint{margin-bottom:10px;}
+.historico-footer .btn{width:auto;padding:10px 16px;font-size:.94rem;}
 
 .service-card{
   background:var(--surface);border:1px solid var(--border);border-radius:14px;

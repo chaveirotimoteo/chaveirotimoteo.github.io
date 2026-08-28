@@ -9,6 +9,16 @@
  * estiver marcado como inativo, não passa.
  */
 
+// Sobe a cada mudança neste arquivo. Serve só para você conferir, pela
+// resposta de diagnóstico (ver função diag()), se a implantação está
+// rodando esta versão ou uma versão antiga esquecida.
+var CODE_VERSION = '2026-08-28-2';
+
+// Por padrão a lista traz TODOS os pendentes e devedores (trabalho em
+// aberto nunca some de vista) mas só os finalizados recentes. O histórico
+// completo continua na planilha e é carregado sob demanda pelo app.
+var HISTORICO_DIAS = 90;
+
 // Cole aqui o Client ID criado no Google Cloud Console (ver README.md).
 // Precisa ser IDÊNTICO ao GOOGLE_CLIENT_ID de assets/app.js.
 // Este valor é público por natureza — não é segredo.
@@ -39,7 +49,46 @@ function doPost(e) {
 }
 
 function doGet(e) {
+  // Abrir a URL do app com "?diag=1" no final, direto no navegador (sem
+  // precisar do editor do Apps Script nem de login), mostra na hora se as
+  // permissões estão liberadas e qual versão do código está implantada.
+  if (e && e.parameter && e.parameter.diag === '1') {
+    return diag();
+  }
   return handleRequest(e);
+}
+
+function diag() {
+  var linhas = [];
+  linhas.push('Versão implantada: ' + CODE_VERSION);
+  linhas.push('');
+
+  try {
+    var res = UrlFetchApp.fetch('https://oauth2.googleapis.com/tokeninfo?id_token=teste', { muteHttpExceptions: true });
+    linhas.push('[OK] Chamadas externas (UrlFetchApp) — HTTP ' + res.getResponseCode() + ' (400 aqui é o esperado).');
+  } catch (err) {
+    linhas.push('[FALHA] Chamadas externas bloqueadas: ' + err.message);
+    linhas.push('        -> Precisa reautorizar o script. Veja apps-script/README.md.');
+  }
+
+  try {
+    linhas.push('[OK] Planilha acessível: "' + SpreadsheetApp.getActiveSpreadsheet().getName() + '".');
+  } catch (err) {
+    linhas.push('[FALHA] Planilha inacessível: ' + err.message);
+  }
+
+  try {
+    getOrCreateFolder(PHOTOS_FOLDER);
+    linhas.push('[OK] Drive acessível (pasta de fotos).');
+  } catch (err) {
+    linhas.push('[FALHA] Drive inacessível: ' + err.message);
+  }
+
+  linhas.push('');
+  linhas.push('Client ID configurado: ' + (CLIENT_ID.indexOf('COLE_AQUI') === 0 ? 'NÃO' : 'sim'));
+  linhas.push('Administrador inicial: ' + BOOTSTRAP_ADMIN);
+
+  return ContentService.createTextOutput(linhas.join('\n')).setMimeType(ContentService.MimeType.TEXT);
 }
 
 function handleRequest(e) {
@@ -64,7 +113,8 @@ function handleRequest(e) {
         out = { ok: true, user: user };
         break;
       case 'list':
-        out = { ok: true, items: listServices(), user: user };
+        var lista = listServices(body.historico === true);
+        out = { ok: true, items: lista.items, ocultos: lista.ocultos, user: user };
         break;
       case 'create':
         out = { ok: true, item: createService(body.data || {}, user) };
@@ -285,17 +335,45 @@ function rowToObject(header, row) {
   };
 }
 
-function listServices() {
+/**
+ * Devolve os atendimentos, do mais recente para o mais antigo.
+ *
+ * Sem "incluirHistorico", oculta os finalizados com mais de HISTORICO_DIAS
+ * — o que mantém a tela enxuta e a resposta leve conforme a planilha
+ * cresce. Pendentes e devedores nunca são ocultados, por mais antigos que
+ * sejam: são trabalho em aberto e dinheiro a receber.
+ */
+function listServices(incluirHistorico) {
   var sheet = getSheet();
   var values = sheet.getDataRange().getValues();
   var header = values[0];
+
+  var limite = new Date();
+  limite.setDate(limite.getDate() - HISTORICO_DIAS);
+
   var items = [];
+  var ocultos = 0;
+
   for (var i = 1; i < values.length; i++) {
     if (!values[i][0]) continue;
-    items.push(rowToObject(header, values[i]));
+    var item = rowToObject(header, values[i]);
+
+    if (!incluirHistorico && item.status === 'Finalizado') {
+      var ref = item.dataFinalizacao || item.criadoEm;
+      var data = ref ? new Date(ref) : null;
+      // Sem data legível, mantém na lista: melhor mostrar a mais do que
+      // sumir com um registro por causa de uma célula mal preenchida.
+      if (data && !isNaN(data.getTime()) && data < limite) {
+        ocultos++;
+        continue;
+      }
+    }
+
+    items.push(item);
   }
-  items.reverse(); // mais recentes primeiro
-  return items;
+
+  items.reverse();
+  return { items: items, ocultos: ocultos };
 }
 
 function findRowById(sheet, id) {
@@ -431,6 +509,20 @@ function readPhoto(fileId) {
 }
 
 // ===================== Diagnóstico =====================
+
+/**
+ * Rode ESTA função pelo editor (menu Executar) para forçar a tela de
+ * autorização a aparecer. De propósito, SEM try/catch: o Apps Script só
+ * mostra "Autorização necessária" quando o erro de permissão não é
+ * capturado pelo código — testarPermissoes() e diag() capturam o erro
+ * pra reportar bonitinho, e isso acaba escondendo o pedido de permissão.
+ */
+function autorizarAgora() {
+  UrlFetchApp.fetch('https://oauth2.googleapis.com/tokeninfo?id_token=teste', { muteHttpExceptions: true });
+  DriveApp.getRootFolder();
+  SpreadsheetApp.getActiveSpreadsheet();
+  Logger.log('Se você está vendo esta linha sem ter passado por uma tela de autorização antes, as permissões já estavam concedidas.');
+}
 
 /**
  * Rode pelo editor (menu Executar) para conferir se as permissões estão

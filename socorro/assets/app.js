@@ -47,6 +47,10 @@
   let idToken = null;
   let currentUser = null;
   let items = [];
+  // Quantos finalizados antigos o servidor deixou de fora, e se o usuário
+  // pediu para ver o histórico completo.
+  let ocultos = 0;
+  let verHistorico = false;
   let activeTab = 'Todos';
   let categoriaValue = 'Automotivo';
   let tipoValue = 'Carro';
@@ -191,8 +195,9 @@
   async function loadItems() {
     mainEl.innerHTML = '<div class="empty">Carregando atendimentos...</div>';
     try {
-      const res = await api('list', {});
+      const res = await api('list', { historico: verHistorico });
       items = res.items || [];
+      ocultos = res.ocultos || 0;
       if (res.user) currentUser = res.user;
       renderTabs();
       renderList();
@@ -232,11 +237,48 @@
   function renderList() {
     const list = activeTab === 'Todos' ? items : items.filter((i) => i.status === activeTab);
     mainEl.innerHTML = '';
+
     if (!list.length) {
       mainEl.innerHTML = '<div class="empty">Nenhum atendimento aqui ainda.</div>';
-      return;
+    } else {
+      list.forEach((item) => mainEl.appendChild(renderCard(item)));
     }
-    list.forEach((item) => mainEl.appendChild(renderCard(item)));
+
+    mainEl.appendChild(renderHistoricoFooter());
+  }
+
+  // Rodapé explicando o recorte da lista. Pendentes e devedores estão
+  // sempre todos aqui; só os finalizados antigos ficam de fora até que se
+  // peça o histórico.
+  function renderHistoricoFooter() {
+    const wrap = document.createElement('div');
+    wrap.className = 'historico-footer';
+
+    if (verHistorico) {
+      wrap.innerHTML = '<p class="hint">Mostrando o histórico completo.</p>';
+      const btn = document.createElement('button');
+      btn.className = 'btn secondary';
+      btn.textContent = 'Voltar para os recentes';
+      btn.addEventListener('click', () => {
+        verHistorico = false;
+        loadItems();
+      });
+      wrap.appendChild(btn);
+      return wrap;
+    }
+
+    if (!ocultos) return wrap;
+
+    wrap.innerHTML = '<p class="hint">' + ocultos + ' atendimento(s) finalizado(s) há mais de 90 dias não aparecem aqui. Pendentes e devedores são sempre mostrados, por mais antigos que sejam.</p>';
+    const btn = document.createElement('button');
+    btn.className = 'btn secondary';
+    btn.textContent = 'Ver histórico completo';
+    btn.addEventListener('click', () => {
+      verHistorico = true;
+      loadItems();
+    });
+    wrap.appendChild(btn);
+    return wrap;
   }
 
   function renderCard(item) {

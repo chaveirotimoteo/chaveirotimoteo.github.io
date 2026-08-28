@@ -30,3 +30,15 @@
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
     Cache-Control = "no-store"
+
+# O app da moto também é de uso interno e não deve ser indexado. Mas aqui
+# NÃO usamos "no-store": ele precisa funcionar offline, e o técnico costuma
+# abri-lo sem sinal. "no-cache" mantém o app sempre atualizado (o navegador
+# confere com o servidor a cada abertura) sem proibir que os arquivos sejam
+# guardados para uso sem internet. Os dados em si não passam por aqui:
+# ficam no aparelho e vão para a planilha por POST.
+[[headers]]
+  for = "/moto/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-cache"

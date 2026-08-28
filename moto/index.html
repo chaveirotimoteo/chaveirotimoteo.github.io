@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chaveiro Timóteo — Controle da Moto</title>
+<meta name="theme-color" content="#0a0a0b">
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png?v=1">
+<link rel="apple-touch-icon" href="icons/icon-192.png?v=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- ===== Tela de login ===== -->
+<section id="login-screen" class="login-screen">
+  <div class="login-card">
+    <div class="login-mark"><img src="assets/logo.svg" alt="" width="40" height="40"></div>
+    <h1>Controle da Moto</h1>
+    <p class="login-sub">Chaveiro Timóteo</p>
+    <p class="login-hint">Acesso restrito à equipe. Entre com a conta Google cadastrada pelo administrador.</p>
+    <div id="gsi-button" class="gsi-button"></div>
+    <div id="login-status"></div>
+    <button class="btn secondary" id="btn-offline" hidden>Continuar sem internet</button>
+  </div>
+</section>
+
+<!-- ===== Aplicação ===== -->
+<div id="app" hidden>
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark"><img src="assets/logo.svg" alt="Chaveiro Timóteo" width="24" height="24"></div>
+      <div class="brand-text">
+        <h1>Controle da Moto</h1>
+        <p class="tagline" id="moto-nome">Chaveiro Timóteo</p>
+      </div>
+      <button class="user-chip" id="user-chip" title="Sua conta"></button>
+    </div>
+  </div>
+
+  <!-- Faixa de sincronização: só aparece quando há algo a resolver. -->
+  <div class="sync-bar" id="sync-bar" hidden>
+    <span id="sync-text"></span>
+    <button class="sync-action" id="sync-action" hidden></button>
+  </div>
+
+  <main id="main"></main>
+
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+
+<!-- ===== Modal: formulário (retirada, devolução, abastecimento, ocorrência, manutenção) ===== -->
+<div class="modal-backdrop" id="modal-form">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="form-title">Registro</h2>
+      <button class="icon-btn" data-close>&times;</button>
+    </div>
+    <div class="modal-body" id="form-body"></div>
+  </div>
+</div>
+
+<!-- ===== Modal: detalhe de um registro ===== -->
+<div class="modal-backdrop" id="modal-detail">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="detail-title">Registro</h2>
+      <button class="icon-btn" data-close>&times;</button>
+    </div>
+    <div class="modal-body" id="detail-body"></div>
+  </div>
+</div>
+
+<!-- ===== Modal: conta / administração ===== -->
+<div class="modal-backdrop" id="modal-account">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Minha conta</h2>
+      <button class="icon-btn" data-close>&times;</button>
+    </div>
+    <div class="modal-body" id="account-body"></div>
+  </div>
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="assets/calc.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -84,6 +84,24 @@ Esse valor é público por natureza — pode ficar no repositório sem problema.
 > Google no nível do Apps Script. Quem barra o acesso é o próprio código,
 > que exige um crachá válido e um e-mail cadastrado. Sem isso, nada passa.
 
+### Erro "Você não tem permissão para chamar UrlFetchApp.fetch"
+
+Acontece quando o script foi autorizado antes de passar a fazer chamadas
+externas — a autorização antiga não cobre a permissão nova. Para resolver:
+
+1. No editor do Apps Script: **⚙️ Configurações do projeto** → marque
+   **"Mostrar o arquivo de manifesto appsscript.json no editor"**
+2. Abra o `appsscript.json` que apareceu na lista de arquivos e substitua o
+   conteúdo pelo do arquivo desta pasta (declara as três permissões
+   necessárias)
+3. Selecione a função **`protegerFotosAntigas`** no menu suspenso e clique
+   em **Executar**
+4. Vai aparecer **"Autorização necessária"** → **Revisar permissões** →
+   escolha sua conta → **Avançado** → **Acessar (não seguro)** → **Permitir**
+   - O aviso de "app não verificado" é esperado: o app é seu e não passou
+     pela verificação do Google, que só faz sentido para apps públicos
+5. Faça uma **nova versão** da implantação (passo abaixo) e teste de novo
+
 ### Ao alterar o Code.gs depois
 
 **Implantar → Gerenciar implantações → ✏️ (lápis) → Versão: Nova versão →

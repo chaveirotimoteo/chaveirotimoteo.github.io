@@ -430,6 +430,46 @@ function readPhoto(fileId) {
   };
 }
 
+// ===================== Diagnóstico =====================
+
+/**
+ * Rode pelo editor (menu Executar) para conferir se as permissões estão
+ * concedidas. O resultado aparece no "Registro de execução", embaixo.
+ * Se esta função passar e o app ainda falhar, o problema é a implantação
+ * estar servindo uma versão antiga — refaça "Nova versão".
+ */
+function testarPermissoes() {
+  var linhas = [];
+
+  try {
+    var res = UrlFetchApp.fetch('https://oauth2.googleapis.com/tokeninfo?id_token=teste', { muteHttpExceptions: true });
+    linhas.push('OK  - Chamadas externas (UrlFetchApp) liberadas. Código HTTP: ' + res.getResponseCode() + ' (400 aqui é esperado, o token é falso).');
+  } catch (err) {
+    linhas.push('FALHA - Chamadas externas bloqueadas: ' + err.message);
+  }
+
+  try {
+    var nome = SpreadsheetApp.getActiveSpreadsheet().getName();
+    linhas.push('OK  - Planilha acessível: "' + nome + '".');
+  } catch (err) {
+    linhas.push('FALHA - Planilha inacessível: ' + err.message);
+  }
+
+  try {
+    getOrCreateFolder(PHOTOS_FOLDER);
+    linhas.push('OK  - Drive acessível (pasta de fotos).');
+  } catch (err) {
+    linhas.push('FALHA - Drive inacessível: ' + err.message);
+  }
+
+  linhas.push('Client ID configurado: ' + (CLIENT_ID.indexOf('COLE_AQUI') === 0 ? 'NÃO' : 'sim'));
+  linhas.push('Administrador inicial: ' + BOOTSTRAP_ADMIN);
+
+  var texto = linhas.join('\n');
+  Logger.log(texto);
+  return texto;
+}
+
 /**
  * Rode UMA VEZ pelo editor do Apps Script (menu Executar) para revogar o
  * compartilhamento público das fotos enviadas na versão anterior do app.

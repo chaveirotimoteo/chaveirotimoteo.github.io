@@ -24,7 +24,7 @@
   // ===== CONFIGURAÇÃO =====
   var CONFIG = {
     // URL do Apps Script publicado (ver apps-script/README.md).
-    API_URL: 'COLE_AQUI_A_URL_DO_APPS_SCRIPT',
+    API_URL: 'https://script.google.com/macros/s/AKfycbxc6iROa9ZH4zdDvrH8qfvGUfICDC8zKAwPLN3x08T2z9Q1XFdzguY-ub0Vs7LAj57q/exec',
     // Tranca simples do endereço acima: precisa ser idêntica à CHAVE_DO_APP
     // do Code.gs. Não é senha nem identifica ninguém — só faz o backend
     // recusar pedidos que não vieram deste app.

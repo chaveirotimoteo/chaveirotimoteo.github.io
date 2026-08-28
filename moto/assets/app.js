@@ -237,7 +237,19 @@
 
   function api(action, payload) {
     if (!CONFIG.API_URL || CONFIG.API_URL.indexOf('COLE_AQUI') === 0) {
-      return Promise.reject(new Error('O app ainda não foi conectado à planilha.'));
+      return Promise.reject(new Error('O app ainda não foi conectado à planilha. Veja apps-script/README.md.'));
+    }
+    // Confusão fácil de cometer: colar aqui o link da planilha em vez do
+    // endereço do Apps Script publicado. Sem este aviso, o erro apareceria
+    // só lá na frente, e sem dizer o que está errado.
+    if (CONFIG.API_URL.indexOf('docs.google.com') >= 0) {
+      return Promise.reject(new Error(
+        'A API_URL está com o link da planilha. O app precisa do endereço do Apps Script publicado, ' +
+        'que termina em /exec (Extensões → Apps Script → Implantar → App da Web).'));
+    }
+    if (CONFIG.API_URL.indexOf('/exec') < 0) {
+      return Promise.reject(new Error(
+        'A API_URL não parece ser a de um Apps Script publicado: ela deve terminar em /exec.'));
     }
     var body = Object.assign({ action: action, chave: CONFIG.CHAVE_DO_APP }, payload);
     return fetch(CONFIG.API_URL, {

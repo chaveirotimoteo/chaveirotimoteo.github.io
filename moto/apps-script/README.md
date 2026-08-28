@@ -123,7 +123,31 @@ registrando"** de cada formulário vem da aba **`Equipe`** da planilha:
 - Quem não estiver na lista ainda pode digitar o nome na abertura do app —
   útil para um ajudante de um dia
 
-## Parte 5 — Instalar no celular do técnico
+## Parte 5 — Etiquetas com QR code
+
+Abra **`/moto/etiquetas.html`** no computador e clique em imprimir. Sai uma
+folha com seis etiquetas para recortar:
+
+| Etiqueta | Onde colar |
+|---|---|
+| Geral | Quadro de chaves ou parede da oficina |
+| Retirada / Devolução | Junto do gancho da chave da moto |
+| Abastecimento | Porta-documentos da moto, ou colada no tanque |
+| Ocorrência | Junto da documentação da moto |
+| Manutenção | Com quem autoriza |
+
+Escanear a etiqueta abre o app **já no formulário certo** — no posto, é
+apontar a câmera e preencher. Num celular que nunca abriu o app, ele
+pergunta o nome primeiro e depois vai para o formulário.
+
+Os códigos são gerados a partir do endereço onde a página estiver aberta.
+Se o site mudar de endereço, reabra a página no endereço novo e imprima de
+novo — não precisa refazer nada.
+
+Não imprima menor que 3 cm de lado, e não corte a margem branca em volta do
+código: é ela que faz o leitor enxergar onde o código começa.
+
+## Parte 6 — Instalar no celular do técnico
 
 O app funciona no navegador, mas instalado é melhor: abre em tela cheia,
 tem ícone próprio e funciona offline com mais folga.

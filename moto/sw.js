@@ -11,13 +11,15 @@
 // Como o app não tem login, abrir sem sinal já cai direto na tela de
 // trabalho: o esqueleto vem daqui e os dados vêm do IndexedDB.
 
-const CACHE = 'moto-v2';
+const CACHE = 'moto-v3';
 const ASSETS = [
   './',
   './index.html',
   './assets/style.css',
   './assets/app.js',
   './assets/calc.js',
+  './assets/qr.js',
+  './etiquetas.html',
   './assets/logo.svg',
   './manifest.json',
   './icons/icon-192.png?v=1',

@@ -477,6 +477,9 @@
   function escolherTecnico(nome) {
     salvarTecnico(nome);
     entrarNoApp();
+    // Veio de um QR code num aparelho que ainda não tinha nome escolhido:
+    // depois de se identificar, cai direto no formulário que ele queria.
+    abrirAcaoPendente();
     // A lista da equipe pode ter mudado na planilha; atualiza por trás.
     sincronizar(true);
   }
@@ -1482,10 +1485,20 @@
   // Início
   // ===================================================================
 
-  function acaoDaUrl() {
-    var params = new URLSearchParams(window.location.search);
-    var acao = params.get('acao');
-    if (acao && FORMULARIOS[acao]) setTimeout(function () { abrirFormulario(acao); }, 400);
+  // Ação pedida pelo endereço (?acao=abastecimento), que é como os QR codes
+  // e os atalhos do celular abrem direto no formulário certo.
+  var acaoPendente = '';
+
+  function lerAcaoDaUrl() {
+    var acao = new URLSearchParams(window.location.search).get('acao');
+    acaoPendente = acao && FORMULARIOS[acao] ? acao : '';
+  }
+
+  function abrirAcaoPendente() {
+    if (!acaoPendente) return;
+    var acao = acaoPendente;
+    acaoPendente = '';
+    setTimeout(function () { abrirFormulario(acao); }, 400);
   }
 
   function comecar() {
@@ -1499,11 +1512,12 @@
       .catch(function () { /* primeiro uso: não há nada guardado ainda */ })
       .then(function () {
         tecnico = lerTecnico();
+        lerAcaoDaUrl();
         if (tecnico) {
           // Já usou este aparelho antes: vai direto para o trabalho, com ou
           // sem sinal. Nada a digitar, nada a esperar.
           entrarNoApp();
-          acaoDaUrl();
+          abrirAcaoPendente();
         } else {
           mostrarQuemEVoce();
         }

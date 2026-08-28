@@ -477,6 +477,20 @@ function readPhoto(fileId) {
 // ===================== Diagnóstico =====================
 
 /**
+ * Rode ESTA função pelo editor (menu Executar) para forçar a tela de
+ * autorização a aparecer. De propósito, SEM try/catch: o Apps Script só
+ * mostra "Autorização necessária" quando o erro de permissão não é
+ * capturado pelo código — testarPermissoes() e diag() capturam o erro
+ * pra reportar bonitinho, e isso acaba escondendo o pedido de permissão.
+ */
+function autorizarAgora() {
+  UrlFetchApp.fetch('https://oauth2.googleapis.com/tokeninfo?id_token=teste', { muteHttpExceptions: true });
+  DriveApp.getRootFolder();
+  SpreadsheetApp.getActiveSpreadsheet();
+  Logger.log('Se você está vendo esta linha sem ter passado por uma tela de autorização antes, as permissões já estavam concedidas.');
+}
+
+/**
  * Rode pelo editor (menu Executar) para conferir se as permissões estão
  * concedidas. O resultado aparece no "Registro de execução", embaixo.
  * Se esta função passar e o app ainda falhar, o problema é a implantação

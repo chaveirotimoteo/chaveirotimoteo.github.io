@@ -12,7 +12,12 @@
 // Sobe a cada mudança neste arquivo. Serve só para você conferir, pela
 // resposta de diagnóstico (ver função diag()), se a implantação está
 // rodando esta versão ou uma versão antiga esquecida.
-var CODE_VERSION = '2026-08-28-1';
+var CODE_VERSION = '2026-08-28-2';
+
+// Por padrão a lista traz TODOS os pendentes e devedores (trabalho em
+// aberto nunca some de vista) mas só os finalizados recentes. O histórico
+// completo continua na planilha e é carregado sob demanda pelo app.
+var HISTORICO_DIAS = 90;
 
 // Cole aqui o Client ID criado no Google Cloud Console (ver README.md).
 // Precisa ser IDÊNTICO ao GOOGLE_CLIENT_ID de assets/app.js.
@@ -108,7 +113,8 @@ function handleRequest(e) {
         out = { ok: true, user: user };
         break;
       case 'list':
-        out = { ok: true, items: listServices(), user: user };
+        var lista = listServices(body.historico === true);
+        out = { ok: true, items: lista.items, ocultos: lista.ocultos, user: user };
         break;
       case 'create':
         out = { ok: true, item: createService(body.data || {}, user) };
@@ -329,17 +335,45 @@ function rowToObject(header, row) {
   };
 }
 
-function listServices() {
+/**
+ * Devolve os atendimentos, do mais recente para o mais antigo.
+ *
+ * Sem "incluirHistorico", oculta os finalizados com mais de HISTORICO_DIAS
+ * — o que mantém a tela enxuta e a resposta leve conforme a planilha
+ * cresce. Pendentes e devedores nunca são ocultados, por mais antigos que
+ * sejam: são trabalho em aberto e dinheiro a receber.
+ */
+function listServices(incluirHistorico) {
   var sheet = getSheet();
   var values = sheet.getDataRange().getValues();
   var header = values[0];
+
+  var limite = new Date();
+  limite.setDate(limite.getDate() - HISTORICO_DIAS);
+
   var items = [];
+  var ocultos = 0;
+
   for (var i = 1; i < values.length; i++) {
     if (!values[i][0]) continue;
-    items.push(rowToObject(header, values[i]));
+    var item = rowToObject(header, values[i]);
+
+    if (!incluirHistorico && item.status === 'Finalizado') {
+      var ref = item.dataFinalizacao || item.criadoEm;
+      var data = ref ? new Date(ref) : null;
+      // Sem data legível, mantém na lista: melhor mostrar a mais do que
+      // sumir com um registro por causa de uma célula mal preenchida.
+      if (data && !isNaN(data.getTime()) && data < limite) {
+        ocultos++;
+        continue;
+      }
+    }
+
+    items.push(item);
   }
-  items.reverse(); // mais recentes primeiro
-  return items;
+
+  items.reverse();
+  return { items: items, ocultos: ocultos };
 }
 
 function findRowById(sheet, id) {

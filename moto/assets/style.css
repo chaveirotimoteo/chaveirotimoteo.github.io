@@ -340,3 +340,4 @@ main{padding:14px 16px calc(var(--nav-altura) + env(safe-area-inset-bottom) + 24
   .acoes-rapidas .acao:nth-child(5) .acao-sub{margin-left:0;}
   .kpis{grid-template-columns:repeat(3,1fr);}
 }
+.faixa-media .faixa-nota{display:block;font-size:.74rem;color:var(--muted);margin-top:3px;}

@@ -26,7 +26,7 @@
 // Sobe a cada mudança neste arquivo. Serve para conferir, pela resposta de
 // diagnóstico (abra a URL do app com "?diag=1"), se a implantação está
 // rodando esta versão ou uma antiga esquecida.
-var CODE_VERSION = '2026-08-28-2';
+var CODE_VERSION = '2026-08-28-3';
 
 // Tranca simples do endereço deste script. Precisa ser IDÊNTICA à CHAVE_DO_APP
 // de assets/app.js. Já vem preenchida; troque nos dois arquivos ao mesmo
@@ -47,7 +47,15 @@ var MOTO = 'Moto 1';
 var EQUIPE_INICIAL = ['Willian', 'Lucas', 'Giovani'];
 
 // Regras da empresa que o app mostra e a planilha registra.
-var LIMITE_ABASTECIMENTO = 40;   // R$ pré-autorizados sem pedir antes
+//
+// A regra do abastecimento é COMPLETAR O TANQUE, sempre. Não há mais teto de
+// valor: o valor é o que der para encher. Além de simplificar para o técnico,
+// isso é o que torna o KM/L confiável — a conta de consumo compara a
+// distância entre dois tanques cheios, e só fecha se eles forem cheios mesmo.
+//
+// Valor acima do qual vale conferir o lançamento. NÃO é autorização: serve
+// para pegar dedo errado na digitação e abastecimento fora do padrão.
+var VALOR_ABASTECIMENTO_ATIPICO = 80;
 var HISTORICO_DIAS = 120;        // quanto o app carrega por padrão
 
 var PHOTOS_FOLDER = 'Moto - Fotos';
@@ -70,7 +78,7 @@ var SHEETS = {
     nome: 'Abastecimentos',
     colunas: [
       'ID', 'Data/Hora', 'Moto', 'Técnico', 'KM', 'Litros', 'Valor pago',
-      'Preço/litro', 'Posto', 'Acima do pré-autorizado', 'Observação',
+      'Preço/litro', 'Tanque completo', 'Posto', 'Observação',
       'Foto do visor da bomba', 'Registrado em', 'Enviado em',
     ],
   },
@@ -107,7 +115,10 @@ var SHEETS = {
 // existe UM nome por informação, valendo tanto para gravar quanto para ler.
 var EDITAVEIS = {
   diario: ['Tipo', 'Técnico', 'KM', 'Observação'],
-  abastecimento: ['Técnico', 'KM', 'Litros', 'Valor pago', 'Posto', 'Observação'],
+  abastecimento: [
+    'Técnico', 'KM', 'Litros', 'Valor pago', 'Tanque completo', 'Posto',
+    'Observação',
+  ],
   ocorrencia: [
     'Data do fato', 'Tipo', 'Técnico', 'O que houve?', 'Status', 'Valor',
     'Prazo de indicação',
@@ -210,7 +221,7 @@ function conferirChave(chave) {
 }
 
 function configPublica() {
-  return { moto: MOTO, limiteAbastecimento: LIMITE_ABASTECIMENTO };
+  return { moto: MOTO, valorAtipico: VALOR_ABASTECIMENTO_ATIPICO };
 }
 
 /** Nome de quem registrou, como veio do app. */
@@ -227,13 +238,31 @@ function getSheet(tipo) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName(def.nome);
   if (!sheet) sheet = ss.insertSheet(def.nome);
+
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(def.colunas);
     sheet.setFrozenRows(1);
     sheet.getRange(1, 1, 1, def.colunas.length).setFontWeight('bold');
     sheet.setColumnWidth(1, 90);
+    return sheet;
+  }
+
+  // Aba já existe: se o código ganhou uma coluna nova, ela é acrescentada ao
+  // FIM do cabeçalho. Nunca mexemos na ordem do que já está lá — as fórmulas
+  // que você escreveu ao lado continuam apontando para as mesmas células.
+  var header = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  var faltando = def.colunas.filter(function (c) { return header.indexOf(c) < 0; });
+  if (faltando.length) {
+    sheet.getRange(1, header.length + 1, 1, faltando.length)
+      .setValues([faltando])
+      .setFontWeight('bold');
   }
   return sheet;
+}
+
+/** Cabeçalho de verdade da aba, que manda em qual coluna cada valor entra. */
+function cabecalhoDe(sheet) {
+  return sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
 }
 
 /**
@@ -431,7 +460,9 @@ function createRegistro(reg) {
     var litros = Number(linha['Litros']) || 0;
     var valor = Number(linha['Valor pago']) || 0;
     linha['Preço/litro'] = litros > 0 ? arredonda(valor / litros, 3) : '';
-    linha['Acima do pré-autorizado'] = valor > LIMITE_ABASTECIMENTO ? 'Sim' : 'Não';
+    // A regra é completar sempre; quem não completou precisa dizer, senão a
+    // conta de KM/L usaria um tanque pela metade como se fosse cheio.
+    linha['Tanque completo'] = linha['Tanque completo'] === 'Não' ? 'Não' : 'Sim';
   }
 
   if (tipo === 'ocorrencia') {
@@ -454,7 +485,9 @@ function createRegistro(reg) {
   var colFoto = COLUNA_FOTO[tipo];
   if (colFoto) linha[colFoto] = savePhotos(reg.fotos).join(',');
 
-  sheet.appendRow(def.colunas.map(function (c) {
+  // Segue o cabeçalho DA PLANILHA, não a ordem escrita aqui: assim, mexer nas
+  // colunas do código nunca desalinha os dados de uma aba que já existe.
+  sheet.appendRow(cabecalhoDe(sheet).map(function (c) {
     return linha[c] === undefined ? '' : linha[c];
   }));
 

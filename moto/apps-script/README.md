@@ -56,7 +56,9 @@ Se ainda não estiver:
 3. Confira no topo do arquivo:
    - `MOTO` com o apelido ou a placa da moto (ex: `'Honda CG 160 - ABC1D23'`)
    - `EQUIPE_INICIAL` com os nomes que aparecem na primeira abertura
-   - `LIMITE_ABASTECIMENTO` com o valor pré-autorizado (padrão: 40)
+   - `VALOR_ABASTECIMENTO_ATIPICO`: valor acima do qual o app pede
+     conferência (padrão: 80). Não é autorização — é rede de proteção contra
+     dedo errado na digitação
    - `CHAVE_DO_APP` já vem preenchida — não precisa mexer
 4. **Implantar → Nova implantação** (só na primeira vez):
    - Tipo: **App da Web**
@@ -229,7 +231,7 @@ Uma aba por tipo de registro, todas começando com `ID` e `Data/Hora`:
 | Aba | O que guarda |
 |---|---|
 | `Diario de Bordo` | Retiradas e devoluções, com KM e foto do painel |
-| `Abastecimentos` | KM, litros, valor, preço/litro, posto, foto da bomba |
+| `Abastecimentos` | KM, litros, valor, preço/litro, tanque completo, posto, foto da bomba |
 | `Ocorrencias` | Multa, queda, avaria, acidente, furto — com status e prazo |
 | `Manutencoes` | Serviço, itens, valor, oficina, quem autorizou, nota |
 | `Fechamento Mensal` | Números fechados do mês |
@@ -242,7 +244,7 @@ Colunas calculadas na hora da gravação (valor, não fórmula — assim o
 CSV exportado sai certo):
 
 - `Preço/litro` = valor pago ÷ litros
-- `Acima do pré-autorizado` = "Sim" quando passa do `LIMITE_ABASTECIMENTO`
+- `Tanque completo` = "Sim" por padrão; "Não" só quando o técnico declara
 - No fechamento: `KM rodados`, `Custo total`, `KM/L` e `Custo por KM`
 
 **Para seus próprios cálculos:** acrescente colunas e fórmulas à direita
@@ -258,9 +260,23 @@ Exemplos úteis (troque o intervalo conforme o seu caso):
 =MÉDIA(Abastecimentos!H:H)                                            → preço médio do litro
 ```
 
-⚠️ **Não renomeie nem reordene as colunas existentes.** O app procura cada
-coluna pelo nome do cabeçalho; renomear faz o dado parar de ser gravado
-naquela coluna. Adicionar colunas novas ao lado é seguro.
+⚠️ **Não renomeie as colunas existentes.** O app grava seguindo o nome do
+cabeçalho, então renomear faz o dado parar de cair naquela coluna.
+Reordenar é seguro (ele acompanha), e adicionar colunas suas ao lado
+também. Se uma versão nova do app trouxer uma coluna que a sua aba não tem,
+ela é acrescentada sozinha no fim, sem mexer no que já existe.
+
+### A regra do abastecimento
+
+**Completar o tanque, sempre.** Não há teto de valor: o valor é o que der
+para encher.
+
+Isso não é só política — é o que torna o **KM/L confiável**. O consumo se
+mede de tanque cheio a tanque cheio; com tanque pela metade, o número sobe
+e desce sem explicação. Por isso o app pergunta "Completou o tanque?" (já
+vem "Sim") e, quando alguém marca "Não", tira aquele abastecimento **e o
+seguinte** da conta de consumo — o seguinte também não vale, porque partiu
+de um tanque que não estava cheio.
 
 **Corrigir ou apagar um lançamento** se faz aqui, direto na planilha. O app
 não oferece isso de propósito: o endereço do script não pede login, e uma

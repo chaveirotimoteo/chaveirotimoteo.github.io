@@ -41,7 +41,7 @@
     'Pneu traseiro', 'Freio', 'Filtro de ar', 'Vela', 'Elétrica', 'Suspensão', 'Outro'];
   var FORMAS_PAGAMENTO = ['Pix', 'Dinheiro', 'Cartão débito', 'Cartão crédito', 'Boleto'];
 
-  var LIMITE_ABASTECIMENTO_PADRAO = 40;
+  var VALOR_ATIPICO_PADRAO = 80;
 
   var CLASSE_STATUS = {
     'Aberta': 'badge-aberta',
@@ -54,7 +54,7 @@
   // ===== Estado =====
   var tecnico = '';            // quem está usando este aparelho
   var equipe = [];             // nomes que aparecem no campo "quem registrou"
-  var configServidor = { moto: '', limiteAbastecimento: LIMITE_ABASTECIMENTO_PADRAO };
+  var configServidor = { moto: '', valorAtipico: VALOR_ATIPICO_PADRAO };
   var registros = { diario: [], abastecimento: [], ocorrencia: [], manutencao: [], fechamento: [] };
   var fila = [];               // registros ainda não enviados
   var erroSincronizacao = '';  // último motivo de falha, para mostrar na faixa
@@ -746,7 +746,10 @@
     var media = C.mediaKmPorLitro(v.abastecimento || []);
 
     mainEl.innerHTML = cabecalhoLista('Abastecimentos', 'abastecimento', 'Abastecer') +
-      (media ? '<div class="faixa-media">Média geral: <strong>' + C.formataNumero(media, 1) + ' km/L</strong></div>' : '') +
+      (media
+        ? '<div class="faixa-media">Consumo médio: <strong>' + C.formataNumero(media, 1) + ' km/L</strong>' +
+          '<span class="faixa-nota">de tanque cheio a tanque cheio</span></div>'
+        : '<div class="faixa-media">O consumo aparece a partir do segundo tanque cheio seguido.</div>') +
       (comConsumo.length ? comConsumo.map(function (i) {
         return card(i, 'abastecimento',
           '<div class="registro-topo">' +
@@ -760,8 +763,11 @@
           '</div>' +
           '<div class="registro-numeros">' +
             '<span>' + escapeHtml(i.precoLitro ? C.formataMoeda(i.precoLitro) + '/L' : '—') + '</span>' +
-            '<span>' + (i.kmPorLitro ? escapeHtml(C.formataNumero(i.kmPorLitro, 1)) + ' km/L' : 'consumo: falta o anterior') + '</span>' +
+            '<span>' + (i.kmPorLitro
+              ? escapeHtml(C.formataNumero(i.kmPorLitro, 1)) + ' km/L'
+              : 'sem consumo: ' + escapeHtml(i.semConsumoPorque || '—')) + '</span>' +
           '</div>' +
+          (C.tanqueCompleto(i) ? '' : '<div class="registro-prazo">Tanque não completado</div>') +
           selosDoCard(i));
       }).join('') : vazio('Nenhum abastecimento registrado.')) +
       rodapeHistorico();
@@ -860,7 +866,6 @@
   // ===================================================================
 
   function renderRegras() {
-    var limite = configServidor.limiteAbastecimento || LIMITE_ABASTECIMENTO_PADRAO;
     mainEl.innerHTML = '<div class="lista-topo"><h2>Regras da moto</h2>' +
       '<button class="btn-mini" data-ir="inicio">Voltar</button></div>' +
       grupoRegras('🔑 Antes de sair', [
@@ -875,8 +880,8 @@
         'Se notou qualquer problema na moto, registra como Ocorrência',
       ]) +
       grupoRegras('⛽ Abastecimento', [
-        'Até <strong>' + C.formataMoeda(limite) + '</strong> está pré-autorizado, pode abastecer sem pedir',
-        'Acima disso, avisa antes',
+        '<strong>Complete o tanque. Sempre.</strong> Não existe teto de valor: é o que der para encher',
+        'Se por algum motivo não deu para completar, marque <strong>Não</strong> no formulário',
         'Sempre no posto combinado',
         'Foto do visor da bomba, mostrando os litros e o valor',
       ]) +
@@ -888,6 +893,7 @@
       grupoRegras('⚠️ Nunca', [
         'Sair sem preencher o formulário de Retirada',
         'Devolver sem foto do painel',
+        'Sair do posto com o tanque pela metade',
         'Levar na oficina por conta própria',
       ]) +
       '<div class="cartao cartao-alerta">' +
@@ -939,10 +945,17 @@
     abastecimento: {
       titulo: 'Abastecimento',
       tipo: 'abastecimento',
+      aviso: 'Complete o tanque. Sempre.',
       campos: [
         { chave: 'km', rotulo: 'KM do painel', tipo: 'km', obrigatorio: true },
         { chave: 'litros', rotulo: 'Litros', tipo: 'decimal', obrigatorio: true, placeholder: '0,00' },
         { chave: 'valorPago', rotulo: 'Valor pago (R$)', tipo: 'decimal', obrigatorio: true, placeholder: '0,00' },
+        {
+          chave: 'tanqueCompleto', rotulo: 'Completou o tanque?', tipo: 'chips',
+          opcoes: ['Sim', 'Não'], obrigatorio: true,
+          padrao: function () { return 'Sim'; },
+          dica: 'A regra é completar sempre. Se não deu, marque "Não" — é o que mantém a conta de consumo honesta.',
+        },
         { chave: 'posto', rotulo: 'Posto', tipo: 'texto', placeholder: 'Nome do posto' },
         { chave: '_fotos', rotulo: 'Foto do visor da bomba', tipo: 'fotos', obrigatorio: true, dica: 'Precisa aparecer os litros e o valor.' },
         { chave: 'observacao', rotulo: 'Observação', tipo: 'textarea', placeholder: 'Opcional' },
@@ -1181,10 +1194,16 @@
     if (aviso && !confirm(aviso + '\n\nRegistrar assim mesmo?')) return;
 
     if (spec.tipo === 'abastecimento') {
-      var limite = configServidor.limiteAbastecimento || LIMITE_ABASTECIMENTO_PADRAO;
       var valorPago = C.num(estadoForm.valorPago);
-      if (valorPago !== null && valorPago > limite &&
-        !confirm('Acima do pré-autorizado (' + C.formataMoeda(limite) + ').\n\nVocê avisou a gestão antes? O registro fica marcado na planilha.')) {
+      // Não é autorização — a regra agora é completar sempre, e o valor é o
+      // que der. É só uma conferência contra dedo errado na digitação.
+      var atipico = configServidor.valorAtipico || VALOR_ATIPICO_PADRAO;
+      if (valorPago !== null && valorPago > atipico &&
+        !confirm(C.formataMoeda(valorPago) + ' está acima do normal para completar o tanque.\n\nConfira o valor no visor da bomba. Registrar assim mesmo?')) {
+        return;
+      }
+      if (estadoForm.tanqueCompleto === 'Não' &&
+        !confirm('A regra da empresa é completar o tanque sempre.\n\nO registro vai marcado como incompleto e fica de fora da conta de consumo. Continuar?')) {
         return;
       }
       var litros = C.num(estadoForm.litros);
@@ -1300,7 +1319,7 @@
       add('Preço por litro', item.precoLitro ? C.formataMoeda(item.precoLitro) : '');
       add('KM', C.formataKm(item.km));
       add('Posto', item.posto);
-      add('Acima do pré-autorizado', item.acimaDoPreAutorizado);
+      add('Tanque completo', item.tanqueCompleto);
       add('Observação', item.observacao);
     } else if (item._tipo === 'manutencao') {
       add('Serviço', item.servico);

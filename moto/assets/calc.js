@@ -68,13 +68,23 @@
     return maior;
   }
 
+  /** A regra da empresa é completar o tanque; só "Não" marca o contrário. */
+  function tanqueCompleto(a) {
+    return a.tanqueCompleto !== 'Não';
+  }
+
   /**
-   * Consumo de cada abastecimento, calculado de tanque a tanque: os KM
-   * rodados desde o abastecimento anterior divididos pelos litros DESTE.
+   * Consumo de cada abastecimento, de tanque a tanque: os KM rodados desde o
+   * abastecimento anterior divididos pelos litros DESTE.
    *
-   * O primeiro abastecimento nunca tem consumo (não há anterior para
-   * comparar), e a conta só faz sentido quando se enche o tanque sempre
-   * do mesmo jeito — por isso o app mostra como estimativa.
+   * A conta só fecha entre dois tanques CHEIOS — é isso que a regra de
+   * "sempre completar" garante. Por isso o consumo fica de fora quando:
+   *   - é o primeiro abastecimento (não há anterior para comparar);
+   *   - este não completou o tanque (os litros não repõem a distância toda);
+   *   - o ANTERIOR não completou (o ponto de partida não era tanque cheio).
+   *
+   * Descartar esses casos é o que faz a média ser um número de verdade, em
+   * vez de uma estimativa que sobe e desce sem explicação.
    */
   function consumoPorAbastecimento(abastecimentos) {
     var lista = (abastecimentos || [])
@@ -87,10 +97,20 @@
       var valor = num(a.valorPago);
       var anterior = i > 0 ? lista[i - 1] : null;
       var rodados = anterior ? num(a.km) - num(anterior.km) : null;
+      var comparavel = rodados !== null && litros > 0 &&
+        tanqueCompleto(a) && tanqueCompleto(anterior);
+
       return Object.assign({}, a, {
         kmRodados: rodados,
-        kmPorLitro: rodados !== null && litros > 0 ? rodados / litros : null,
+        kmPorLitro: comparavel ? rodados / litros : null,
         precoLitro: litros > 0 && valor !== null ? valor / litros : null,
+        // Por que este abastecimento não entra na conta de consumo. Vale
+        // mostrar na tela: senão parece defeito do app.
+        semConsumoPorque: comparavel ? null
+          : !anterior ? 'primeiro abastecimento registrado'
+          : !tanqueCompleto(a) ? 'o tanque não foi completado'
+          : !tanqueCompleto(anterior) ? 'o abastecimento anterior não completou o tanque'
+          : 'faltam os litros',
       });
     });
   }
@@ -268,6 +288,7 @@
 
   raiz.MotoCalc = {
     num: num,
+    tanqueCompleto: tanqueCompleto,
     mesDe: mesDe,
     statusDaMoto: statusDaMoto,
     kmAtual: kmAtual,

@@ -9,6 +9,11 @@
  * estiver marcado como inativo, não passa.
  */
 
+// Sobe a cada mudança neste arquivo. Serve só para você conferir, pela
+// resposta de diagnóstico (ver função diag()), se a implantação está
+// rodando esta versão ou uma versão antiga esquecida.
+var CODE_VERSION = '2026-08-28-1';
+
 // Cole aqui o Client ID criado no Google Cloud Console (ver README.md).
 // Precisa ser IDÊNTICO ao GOOGLE_CLIENT_ID de assets/app.js.
 // Este valor é público por natureza — não é segredo.
@@ -39,7 +44,46 @@ function doPost(e) {
 }
 
 function doGet(e) {
+  // Abrir a URL do app com "?diag=1" no final, direto no navegador (sem
+  // precisar do editor do Apps Script nem de login), mostra na hora se as
+  // permissões estão liberadas e qual versão do código está implantada.
+  if (e && e.parameter && e.parameter.diag === '1') {
+    return diag();
+  }
   return handleRequest(e);
+}
+
+function diag() {
+  var linhas = [];
+  linhas.push('Versão implantada: ' + CODE_VERSION);
+  linhas.push('');
+
+  try {
+    var res = UrlFetchApp.fetch('https://oauth2.googleapis.com/tokeninfo?id_token=teste', { muteHttpExceptions: true });
+    linhas.push('[OK] Chamadas externas (UrlFetchApp) — HTTP ' + res.getResponseCode() + ' (400 aqui é o esperado).');
+  } catch (err) {
+    linhas.push('[FALHA] Chamadas externas bloqueadas: ' + err.message);
+    linhas.push('        -> Precisa reautorizar o script. Veja apps-script/README.md.');
+  }
+
+  try {
+    linhas.push('[OK] Planilha acessível: "' + SpreadsheetApp.getActiveSpreadsheet().getName() + '".');
+  } catch (err) {
+    linhas.push('[FALHA] Planilha inacessível: ' + err.message);
+  }
+
+  try {
+    getOrCreateFolder(PHOTOS_FOLDER);
+    linhas.push('[OK] Drive acessível (pasta de fotos).');
+  } catch (err) {
+    linhas.push('[FALHA] Drive inacessível: ' + err.message);
+  }
+
+  linhas.push('');
+  linhas.push('Client ID configurado: ' + (CLIENT_ID.indexOf('COLE_AQUI') === 0 ? 'NÃO' : 'sim'));
+  linhas.push('Administrador inicial: ' + BOOTSTRAP_ADMIN);
+
+  return ContentService.createTextOutput(linhas.join('\n')).setMimeType(ContentService.MimeType.TEXT);
 }
 
 function handleRequest(e) {

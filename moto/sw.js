@@ -7,8 +7,11 @@
 //
 // Os dados (registros e fotos) NÃO passam por aqui: ficam no IndexedDB,
 // gerenciados pelo app.js, que cuida da fila de envio para a planilha.
+//
+// Como o app não tem login, abrir sem sinal já cai direto na tela de
+// trabalho: o esqueleto vem daqui e os dados vêm do IndexedDB.
 
-const CACHE = 'moto-v1';
+const CACHE = 'moto-v2';
 const ASSETS = [
   './',
   './index.html',

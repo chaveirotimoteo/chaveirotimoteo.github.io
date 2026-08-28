@@ -15,16 +15,20 @@
 </head>
 <body>
 
-<!-- ===== Tela de login ===== -->
-<section id="login-screen" class="login-screen">
-  <div class="login-card">
+<!-- ===== Quem é você? (no lugar do login) ===== -->
+<section id="quem-e-voce" class="quem-screen">
+  <div class="quem-card">
     <div class="login-mark"><img src="assets/logo.svg" alt="" width="40" height="40"></div>
     <h1>Controle da Moto</h1>
     <p class="login-sub">Chaveiro Timóteo</p>
-    <p class="login-hint">Acesso restrito à equipe. Entre com a conta Google cadastrada pelo administrador.</p>
-    <div id="gsi-button" class="gsi-button"></div>
-    <div id="login-status"></div>
-    <button class="btn secondary" id="btn-offline" hidden>Continuar sem internet</button>
+    <p class="login-hint">Quem é você? O aparelho lembra da escolha — você só faz isso uma vez.</p>
+    <div id="lista-quem" class="lista-quem"></div>
+    <div class="campo">
+      <label for="nome-outro">Não está na lista?</label>
+      <input type="text" id="nome-outro" placeholder="Digite seu nome" autocomplete="name">
+    </div>
+    <div id="quem-status"></div>
+    <button class="btn" id="nome-confirmar">Continuar</button>
   </div>
 </section>
 
@@ -78,14 +82,13 @@
 <div class="modal-backdrop" id="modal-account">
   <div class="modal">
     <div class="modal-head">
-      <h2>Minha conta</h2>
+      <h2>Este aparelho</h2>
       <button class="icon-btn" data-close>&times;</button>
     </div>
     <div class="modal-body" id="account-body"></div>
   </div>
 </div>
 
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="assets/calc.js"></script>
 <script src="assets/app.js"></script>
 </body>

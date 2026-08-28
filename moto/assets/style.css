@@ -31,27 +31,35 @@ body{
   min-height:100vh;
 }
 
-/* ===== Login ===== */
-.login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
-.login-card{
-  width:100%;max-width:360px;text-align:center;
+/* ===== Quem é você? (abertura, no lugar de um login) ===== */
+.quem-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
+.quem-card{
+  width:100%;max-width:380px;text-align:center;
   background:var(--surface);border:1px solid var(--border);
   border-radius:18px;padding:32px 24px;box-shadow:var(--shadow);
 }
+.lista-quem{display:flex;flex-direction:column;gap:9px;margin-bottom:20px;}
+.nome-opcao{
+  background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+  border-radius:12px;padding:15px;font-size:1.05rem;font-weight:600;
+  cursor:pointer;font-family:inherit;
+}
+.nome-opcao.ativo{background:var(--primary);color:var(--primary-contrast);border-color:transparent;}
+.quem-card .campo{text-align:left;}
+.equipe-lista{display:flex;flex-wrap:wrap;gap:8px;}
 .login-mark{
   width:64px;height:64px;margin:0 auto 16px;border-radius:16px;
   background:#000;border:1px solid var(--border);
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 2px 12px rgba(212,175,55,.25);
 }
-.login-card h1{
+.quem-card h1{
   margin:0;font-size:1.25rem;font-weight:700;
   background:linear-gradient(90deg,var(--primary-strong),#fff5da);
   -webkit-background-clip:text;background-clip:text;color:transparent;
 }
 .login-sub{margin:4px 0 0;font-size:.72rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
 .login-hint{margin:18px 0 22px;font-size:.88rem;color:var(--muted);line-height:1.5;}
-.gsi-button{display:flex;justify-content:center;min-height:44px;margin-bottom:12px;}
 
 /* ===== Topo ===== */
 .topbar{
@@ -81,7 +89,6 @@ body{
   color:var(--text);font-size:.82rem;font-weight:700;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
 }
-.user-chip.is-admin{border-color:var(--primary);color:var(--primary-strong);}
 
 /* ===== Faixa de sincronização ===== */
 .sync-bar{

@@ -4,19 +4,26 @@ O app (`/moto/`) é uma página estática. Quem guarda os dados é uma planilha
 do Google Sheets, através de um backend em Google Apps Script.
 
 > **Este app é separado do Controle de Socorro.** Planilha própria, script
-> próprio, lista de acessos própria. Um não enxerga o outro, e mexer em um
-> não afeta o outro. Só o endereço do site (Netlify) é o mesmo, em pastas
-> diferentes: `/socorro/` e `/moto/`.
+> próprio. Um não enxerga o outro, e mexer em um não afeta o outro. Só o
+> endereço do site (Netlify) é o mesmo, em pastas diferentes: `/socorro/` e
+> `/moto/`.
 
-**Como funciona o acesso:** cada pessoa entra com a própria conta Google. O
-Google emite um "crachá" digital assinado, o app envia esse crachá em todo
-pedido, e o Apps Script confere com o Google e procura o e-mail na aba
-`Usuarios` da planilha. Não existe senha guardada em lugar nenhum.
+**Não tem login, de propósito.** Este é um app de campo: o técnico abre no
+posto, na garagem, no subsolo — e o login seria justamente a única parte a
+exigir internet, onde ela mais falta. Aqui ele escolhe o próprio nome na
+primeira vez, o aparelho lembra, e **todo formulário traz o campo "Quem está
+registrando"** já marcado — então a planilha sempre sabe de quem é cada
+lançamento, sem ninguém digitar senha.
+
+Filtrar *quem pode entrar* continua fazendo sentido em tela com dado de
+cliente, como o Controle de Socorro. Aqui é diário de bordo de moto: KM,
+litros, oficina. O que protege o endereço do script é a `CHAVE_DO_APP` —
+uma tranca, não uma senha (veja [Sobre a segurança](#sobre-a-segurança)).
 
 **Como funciona sem internet:** o app grava tudo primeiro no próprio
-aparelho e envia depois. O técnico registra no posto, na garagem, no
-subsolo — sem sinal — e os dados sobem sozinhos quando a conexão voltar.
-Veja a seção [Sobre o funcionamento offline](#sobre-o-funcionamento-offline).
+aparelho e envia depois. Sem login no caminho, a fila sobe sozinha assim que
+o sinal volta — ninguém precisa tocar em nada. Veja
+[Sobre o funcionamento offline](#sobre-o-funcionamento-offline).
 
 ---
 
@@ -42,63 +49,15 @@ Se ainda não estiver:
 4. **Deploy**, e troque o nome do site em **Site configuration → Change
    site name**
 
-Anote o endereço final — ele é usado na Parte 3 e não deve mudar depois,
-sob pena de o login parar de funcionar até ser atualizado lá.
-
-## Parte 3 — Client ID do Google
-
-É o que permite o botão "Entrar com Google". Gratuito.
-
-✅ **Já vem preenchido.** Os dois arquivos deste app já trazem o mesmo
-Client ID usado no Controle de Socorro. Ele autoriza o *endereço do site*,
-que é o mesmo para os dois apps — e isso **não** mistura os dados: cada app
-fala com a sua planilha e tem a sua própria lista de quem pode entrar.
-**Pode pular para a Parte 5.**
-
-Só crie um Client ID novo se quiser separar os dois apps também no Google
-Cloud (por exemplo, para telas de consentimento com nomes diferentes):
-
-1. Acesse [console.cloud.google.com](https://console.cloud.google.com/)
-2. Crie um projeto (ex: "Chaveiro Timóteo") ou selecione um existente
-3. Menu → **APIs e serviços → Tela de permissão OAuth**
-   - Tipo: **Externo**
-   - Nome do app: `Controle da Moto`
-   - E-mail de suporte e de contato: o seu
-   - Em "Usuários de teste", adicione os e-mails da equipe **ou** publique o
-     app (botão "Publicar"). Publicar evita o aviso de "app não verificado"
-     reaparecendo a cada 7 dias
-4. Menu → **APIs e serviços → Credenciais → Criar credenciais → ID do
-   cliente OAuth**
-   - Tipo: **Aplicativo da Web**
-   - Nome: `Moto Web`
-   - Em **Origens JavaScript autorizadas**, adicione o endereço do site:
-     - `https://SEU-SITE.netlify.app`
-     - (para testar no computador, adicione também `http://localhost:8000`)
-   - **Não** precisa preencher "URIs de redirecionamento"
-5. Copie o **Client ID** gerado (termina em `.apps.googleusercontent.com`)
-
-⚠️ O endereço em "Origens JavaScript autorizadas" precisa ser exatamente o
-do site publicado. Se mudar, o login para de funcionar até você atualizar.
-
-## Parte 4 — Colocar o Client ID nos dois arquivos
-
-*(Só se você criou um Client ID novo na Parte 3.)* O mesmo valor vai em
-dois lugares, e precisa ser idêntico nos dois:
-
-- `moto/assets/app.js` → `GOOGLE_CLIENT_ID`
-- `moto/apps-script/Code.gs` → `CLIENT_ID`
-
-Esse valor é público por natureza — pode ficar no repositório sem problema.
-
-## Parte 5 — Publicar o Apps Script
+## Parte 3 — Publicar o Apps Script
 
 1. Na planilha da moto: **Extensões → Apps Script**
 2. Apague o conteúdo e cole o `Code.gs` desta pasta
 3. Confira no topo do arquivo:
-   - `CLIENT_ID` preenchido (já vem, veja a Parte 3)
-   - `BOOTSTRAP_ADMIN` com o e-mail do primeiro administrador
    - `MOTO` com o apelido ou a placa da moto (ex: `'Honda CG 160 - ABC1D23'`)
+   - `EQUIPE_INICIAL` com os nomes que aparecem na primeira abertura
    - `LIMITE_ABASTECIMENTO` com o valor pré-autorizado (padrão: 40)
+   - `CHAVE_DO_APP` já vem preenchida — não precisa mexer
 4. **Implantar → Nova implantação** (só na primeira vez):
    - Tipo: **App da Web**
    - Executar como: **Eu**
@@ -108,9 +67,9 @@ Esse valor é público por natureza — pode ficar no repositório sem problema.
    `moto/assets/app.js` — **este é o único valor que falta preencher**, e é
    o que liga o app à SUA planilha
 
-> "Qualquer pessoa" aqui significa que a *URL* aceita chamadas sem login do
-> Google no nível do Apps Script. Quem barra o acesso é o próprio código,
-> que exige um crachá válido e um e-mail cadastrado. Sem isso, nada passa.
+> "Qualquer pessoa" significa que a *URL* aceita chamadas sem login do
+> Google no nível do Apps Script. O que faz o script recusar um pedido
+> qualquer é a `CHAVE_DO_APP`, que o app envia em toda chamada.
 
 Opcional, mas recomendado: no editor do Apps Script, rode a função
 **`prepararPlanilha`** uma vez. Ela cria todas as abas já com os
@@ -125,7 +84,7 @@ externas. Para resolver:
 1. No editor do Apps Script: **⚙️ Configurações do projeto** → marque
    **"Mostrar o arquivo de manifesto appsscript.json no editor"**
 2. Abra o `appsscript.json` que apareceu e substitua o conteúdo pelo do
-   arquivo desta pasta (declara as três permissões necessárias)
+   arquivo desta pasta
 3. Selecione a função **`autorizarAgora`** e clique em **Executar**
 4. Vai aparecer **"Autorização necessária"** → **Revisar permissões** →
    escolha sua conta → **Avançado** → **Acessar (não seguro)** → **Permitir**
@@ -137,7 +96,8 @@ externas. Para resolver:
 
 Abra a URL do app (a que termina em `/exec`) no navegador com `?diag=1` no
 final. A página responde em texto: versão implantada, se as permissões
-estão liberadas, se a planilha e o Drive estão acessíveis.
+estão liberadas, se a planilha e o Drive estão acessíveis, e quem está
+cadastrado na equipe.
 
 ### Ao alterar o Code.gs depois
 
@@ -145,20 +105,25 @@ estão liberadas, se a planilha e o Drive estão acessíveis.
 Implantar.** Salvar o arquivo não basta, e **não** use "Nova implantação",
 que geraria um endereço diferente.
 
-## Parte 6 — Primeiro acesso e cadastro da equipe
+## Parte 4 — A equipe
 
-1. Abra `https://SEU-SITE.netlify.app/moto/` e entre com a conta definida
-   em `BOOTSTRAP_ADMIN`
-2. Toque no círculo com suas iniciais (canto superior direito)
-3. Em **"Quem pode acessar"**, cadastre os técnicos com o Gmail de cada um
-   - **Técnico**: registra retirada, devolução, abastecimento, ocorrência
-     e manutenção
-   - **Admin**: além disso, fecha o mês, muda o status de ocorrências e
-     gerencia os acessos
-4. Para tirar o acesso de alguém, toque no **×** ao lado do nome. Vale na
-   hora, em todos os aparelhos
+A lista de nomes que aparece em "Quem é você?" e no campo **"Quem está
+registrando"** de cada formulário vem da aba **`Equipe`** da planilha:
 
-## Parte 7 — Instalar no celular do técnico
+| Nome | Ativo |
+|---|---|
+| Willian | Sim |
+| Lucas | Sim |
+| Giovani | Sim |
+
+- **Para incluir alguém:** adicione uma linha. Aparece no app na próxima vez
+  que ele buscar dados — sem mexer em código, sem reimplantar nada
+- **Para tirar alguém:** troque `Sim` por `Não` (ou apague a linha). Os
+  lançamentos antigos daquela pessoa continuam na planilha, como devem
+- Quem não estiver na lista ainda pode digitar o nome na abertura do app —
+  útil para um ajudante de um dia
+
+## Parte 5 — Instalar no celular do técnico
 
 O app funciona no navegador, mas instalado é melhor: abre em tela cheia,
 tem ícone próprio e funciona offline com mais folga.
@@ -167,14 +132,47 @@ tem ícone próprio e funciona offline com mais folga.
 - **iPhone (Safari):** abra `/moto/` → botão compartilhar → **Adicionar à
   Tela de Início**
 
-Depois de instalado, segurar o ícone abre atalhos diretos para **Retirada**,
+Na primeira abertura o técnico toca no próprio nome. Só isso. Depois de
+instalado, segurar o ícone abre atalhos diretos para **Retirada**,
 **Devolução** e **Abastecimento** (no Android).
 
 ---
 
+## Sobre a segurança
+
+Vale ser claro sobre o que este app protege e o que não protege.
+
+**O que existe:**
+
+- A `CHAVE_DO_APP` viaja em toda chamada. Sem ela, o script recusa o pedido.
+  Isso impede que a URL do `/exec`, se um dia for varrida por um robô ou
+  parar num histórico, aceite qualquer coisa
+- As fotos ficam **privadas** no Drive, sem link público
+- A pasta `/moto/` não é indexada por buscadores (`noindex`)
+- O app não apaga nem corrige linhas: essas ações só existem na planilha,
+  que só você abre
+
+**O que NÃO existe, e é uma escolha:**
+
+- Não há senha nem login. Quem tiver o endereço do site consegue abrir o app
+  e lançar registros
+- A `CHAVE_DO_APP` está no código do site. Quem abrir o "ver código-fonte"
+  do navegador consegue lê-la. Ela é uma tranca contra acesso casual e
+  automatizado, **não** um segredo
+- O campo "quem está registrando" é uma declaração, não uma comprovação:
+  registra quem a pessoa disse ser
+
+**Por isso:** aqui vai só dado operacional da moto. Nada de cliente, nada de
+valor a receber, nada que precise de sigilo. Se um dia entrar algo assim
+nesta planilha, é hora de rever esta decisão.
+
+Para trocar a chave (se algum dia quiser invalidar a antiga), mude o valor
+nos **dois** arquivos ao mesmo tempo — `Code.gs` e `assets/app.js` — e
+reimplante o script.
+
 ## Sobre o funcionamento offline
 
-O app foi feito para ser usado onde o sinal falha. Como funciona:
+O app foi feito para ser usado onde o sinal falha:
 
 1. **Tudo é gravado no aparelho primeiro** (IndexedDB), com um identificador
    gerado ali mesmo. Para o técnico, o registro está feito no instante em
@@ -182,7 +180,8 @@ O app foi feito para ser usado onde o sinal falha. Como funciona:
 2. **A fila de envio** guarda o que ainda não subiu, inclusive as fotos. Ela
    sobrevive a fechar o app, trocar de rede e reiniciar o celular
 3. **O envio é tentado sozinho** quando a internet volta, quando o app é
-   aberto, quando volta para a frente e a cada minuto enquanto houver fila
+   aberto, quando volta para a frente e a cada minuto enquanto houver fila.
+   Como não há login no caminho, isso acontece **sem ninguém tocar em nada**
 4. **Reenviar nunca duplica.** Como o identificador nasce no celular, o
    Apps Script reconhece um registro que já gravou e apenas confirma. Isso
    cobre o caso clássico de a conexão cair depois de gravar e antes de o
@@ -193,13 +192,11 @@ O app foi feito para ser usado onde o sinal falha. Como funciona:
    marcado como "aguardando envio", e uma faixa no topo diz quantos
    registros faltam enviar
 
-O que **precisa de internet**: entrar com o Google (o crachá vale ~1 hora),
-ver fotos já enviadas e carregar o histórico completo da planilha.
+O que **precisa de internet**: ver fotos já enviadas e carregar o histórico
+completo da planilha. O resto funciona sem sinal.
 
-Se o técnico abrir o app sem sinal, ele entra direto na tela de trabalho
-com os dados da última vez e pode registrar tudo normalmente. Quando o
-sinal voltar, a faixa no topo oferece o botão **Entrar** — um toque envia
-a fila inteira.
+Na primeiríssima abertura, sem internet, a lista de nomes ainda não chegou —
+o técnico digita o nome dele e segue trabalhando normalmente.
 
 ## Sobre a planilha
 
@@ -212,7 +209,10 @@ Uma aba por tipo de registro, todas começando com `ID` e `Data/Hora`:
 | `Ocorrencias` | Multa, queda, avaria, acidente, furto — com status e prazo |
 | `Manutencoes` | Serviço, itens, valor, oficina, quem autorizou, nota |
 | `Fechamento Mensal` | Números fechados do mês |
-| `Usuarios` | Quem pode entrar no app |
+| `Equipe` | Os nomes que aparecem no app |
+
+Todas as abas de registro têm a coluna **`Técnico`**: quem preencheu o
+formulário.
 
 Colunas calculadas na hora da gravação (valor, não fórmula — assim o
 CSV exportado sai certo):
@@ -238,11 +238,15 @@ Exemplos úteis (troque o intervalo conforme o seu caso):
 coluna pelo nome do cabeçalho; renomear faz o dado parar de ser gravado
 naquela coluna. Adicionar colunas novas ao lado é seguro.
 
+**Corrigir ou apagar um lançamento** se faz aqui, direto na planilha. O app
+não oferece isso de propósito: o endereço do script não pede login, e uma
+ação destrutiva não pode ficar ao alcance de quem tiver a URL.
+
 ## Sobre as fotos
 
 Ficam privadas numa pasta do Drive ("Moto - Fotos"), visíveis apenas para o
-dono da planilha. O app não usa link do Drive: pede o conteúdo pela API já
-autenticada e mostra na tela. Não há link público para vazar.
+dono da planilha. O app não usa link do Drive: pede o conteúdo pela API e
+mostra na tela. Não há link público para vazar.
 
 ## Rotina de conferência
 

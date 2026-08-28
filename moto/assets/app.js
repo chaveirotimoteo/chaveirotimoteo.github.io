@@ -10,24 +10,25 @@
  * enviado para a planilha. Se o envio falhar, ele fica na fila e é tentado
  * de novo sozinho. Como o ID de cada registro nasce aqui no celular, o
  * backend reconhece um reenvio e não duplica a linha.
+ *
+ * NÃO TEM LOGIN, de propósito: o login seria a única parte do app a exigir
+ * internet, justamente onde ela falta. Em vez disso, cada formulário traz um
+ * campo "Quem está registrando", já marcado com quem usa o aparelho — então
+ * a planilha sempre sabe de quem é o lançamento, sem ninguém digitar senha.
+ * Filtrar quem pode entrar continua fazendo sentido em telas com dado de
+ * cliente, como o Controle de Socorro; aqui é diário de bordo de moto.
  */
 (function () {
   'use strict';
 
   // ===== CONFIGURAÇÃO =====
-  // Os dois valores abaixo são públicos por natureza (não são segredos):
-  // quem autoriza de fato é o Apps Script, conferindo o login com o Google
-  // e procurando o e-mail na aba "Usuarios" da planilha.
   var CONFIG = {
+    // URL do Apps Script publicado (ver apps-script/README.md).
     API_URL: 'COLE_AQUI_A_URL_DO_APPS_SCRIPT',
-    // Client ID criado no Google Cloud Console (ver apps-script/README.md).
-    // Precisa ser idêntico ao CLIENT_ID do Code.gs.
-    //
-    // É o mesmo Client ID do Controle de Socorro, de propósito: ele autoriza
-    // o ENDEREÇO do site, que é o mesmo para os dois apps. Isso não mistura
-    // os dados — cada app fala com a sua planilha, definida em API_URL, e
-    // tem a sua própria lista de quem pode entrar.
-    GOOGLE_CLIENT_ID: '725408565457-tva4ijg1dvu1mdfb0tcvj0d87fml43k2.apps.googleusercontent.com',
+    // Tranca simples do endereço acima: precisa ser idêntica à CHAVE_DO_APP
+    // do Code.gs. Não é senha nem identifica ninguém — só faz o backend
+    // recusar pedidos que não vieram deste app.
+    CHAVE_DO_APP: 'GCnZuhwKCFVzFyK7ITZTzdad66YVeiNe',
   };
 
   var C = window.MotoCalc;
@@ -51,8 +52,8 @@
   };
 
   // ===== Estado =====
-  var idToken = null;          // crachá do Google, só na memória desta aba
-  var usuario = null;          // { email, nome, perfil }
+  var tecnico = '';            // quem está usando este aparelho
+  var equipe = [];             // nomes que aparecem no campo "quem registrou"
   var configServidor = { moto: '', limiteAbastecimento: LIMITE_ABASTECIMENTO_PADRAO };
   var registros = { diario: [], abastecimento: [], ocorrencia: [], manutencao: [], fechamento: [] };
   var fila = [];               // registros ainda não enviados
@@ -63,10 +64,8 @@
 
   // ===== Elementos =====
   var el = function (id) { return document.getElementById(id); };
-  var loginScreen = el('login-screen');
-  var loginStatus = el('login-status');
-  var gsiButton = el('gsi-button');
-  var btnOffline = el('btn-offline');
+  var telaQuemEVoce = el('quem-e-voce');
+  var listaQuemEVoce = el('lista-quem');
   var appEl = el('app');
   var mainEl = el('main');
   var navEl = el('bottom-nav');
@@ -133,17 +132,15 @@
     return transacao('cache', 'readwrite', function (s) { return s.put({ chave: chave, valor: valor }); });
   };
 
-  // A identidade (nome, e-mail, perfil) fica no localStorage para o app
-  // abrir direto na tela de trabalho quando não há sinal. Não é credencial:
-  // o crachá do Google continua só na memória e some ao fechar o app.
-  function salvarIdentidade(u) {
-    try { localStorage.setItem('moto.usuario', JSON.stringify(u)); } catch (e) { /* modo privado */ }
+  // Quem usa este aparelho fica guardado aqui, para o campo "quem está
+  // registrando" já vir marcado e o app abrir direto no trabalho. É uma
+  // preferência do aparelho, não uma credencial: não dá acesso a nada.
+  function salvarTecnico(nome) {
+    tecnico = nome;
+    try { localStorage.setItem('moto.tecnico', nome); } catch (e) { /* modo privado */ }
   }
-  function lerIdentidade() {
-    try { return JSON.parse(localStorage.getItem('moto.usuario') || 'null'); } catch (e) { return null; }
-  }
-  function limparIdentidade() {
-    try { localStorage.removeItem('moto.usuario'); } catch (e) { /* nada a fazer */ }
+  function lerTecnico() {
+    try { return localStorage.getItem('moto.tecnico') || ''; } catch (e) { return ''; }
   }
 
   // ===================================================================
@@ -242,7 +239,7 @@
     if (!CONFIG.API_URL || CONFIG.API_URL.indexOf('COLE_AQUI') === 0) {
       return Promise.reject(new Error('O app ainda não foi conectado à planilha.'));
     }
-    var body = Object.assign({ action: action, idToken: idToken }, payload);
+    var body = Object.assign({ action: action, chave: CONFIG.CHAVE_DO_APP }, payload);
     return fetch(CONFIG.API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -250,16 +247,10 @@
     }).then(function (res) {
       return res.json();
     }).then(function (json) {
-      if (!json.ok) {
-        var err = new Error(json.error || 'Erro desconhecido.');
-        err.authFailed = !!json.authFailed;
-        throw err;
-      }
+      if (!json.ok) throw new Error(json.error || 'Erro desconhecido.');
       return json;
     });
   }
-
-  var temSessao = function () { return !!idToken; };
 
   // ===================================================================
   // Fila de envio
@@ -318,7 +309,6 @@
   function sincronizar(forcarRecarga) {
     if (sincronizando) return Promise.resolve();
     if (!navigator.onLine) { atualizarFaixaSync(); return Promise.resolve(); }
-    if (!temSessao()) { atualizarFaixaSync(); return Promise.resolve(); }
 
     sincronizando = true;
     atualizarFaixaSync();
@@ -362,14 +352,17 @@
         if (fila.length === 0 || forcarRecarga) return carregarDaPlanilha();
       })
       .catch(function (err) {
-        // Falha de rede ou de sessão: a fila fica intacta e tenta de novo.
+        // Falha de rede: a fila fica intacta e tenta de novo sozinha.
         erroSincronizacao = err.message || 'Falha ao enviar.';
-        if (err.authFailed) idToken = null;
       })
       .then(function () {
         sincronizando = false;
         atualizarFaixaSync();
         renderTelaAtual();
+        // Na primeira abertura a lista da equipe chega DEPOIS da tela de
+        // "Quem é você?" aparecer. Sem redesenhar aqui, ela ficaria pedindo
+        // para digitar o nome mesmo já tendo os nomes em mãos.
+        if (telaQuemEVoce.style.display !== 'none') renderQuemEVoce();
 
         // Registros lançados DURANTE este envio não entraram no lote. Em
         // vez de esperarem o próximo gatilho, saem agora — senão o técnico
@@ -382,11 +375,11 @@
   function carregarDaPlanilha() {
     return api('list', { historico: verHistorico }).then(function (res) {
       registros = res.registros || registros;
-      if (res.user) { usuario = res.user; salvarIdentidade(usuario); }
+      if (res.equipe && res.equipe.length) equipe = res.equipe;
       if (res.config) configServidor = res.config;
-      return gravarCache('registros', registros).then(function () {
-        return gravarCache('config', configServidor);
-      });
+      return gravarCache('registros', registros)
+        .then(function () { return gravarCache('config', configServidor); })
+        .then(function () { return gravarCache('equipe', equipe); });
     });
   }
 
@@ -410,7 +403,7 @@
         _tipo: item.tipo,
         id: item.id,
         dataHora: item.registradoEm,
-        tecnico: (usuario && (usuario.nome || usuario.email)) || '',
+        tecnico: tecnico,
         _pendente: true,
         _erro: item.ultimoErro,
         _fotosLocais: item.fotos || [],
@@ -420,113 +413,54 @@
   }
 
   // ===================================================================
-  // Login com Google
+  // Quem é você?
   // ===================================================================
+  //
+  // No lugar do login. Só na primeira vez: o aparelho lembra da escolha, e
+  // dali em diante o nome já vem marcado no campo de cada formulário. Trocar
+  // é um toque no círculo do canto.
 
-  function onCredential(response) {
-    idToken = response.credential;
-    fecharModal(modalAccount);
-    iniciarSessao();
-  }
-
-  function iniciarGoogle(destino) {
-    if (CONFIG.GOOGLE_CLIENT_ID.indexOf('COLE_AQUI') === 0) {
-      setStatusMsg(loginStatus, 'O login com Google ainda não foi configurado. Veja apps-script/README.md.', 'err');
-      return false;
-    }
-    if (!window.google || !google.accounts || !google.accounts.id) return false;
-
-    google.accounts.id.initialize({
-      client_id: CONFIG.GOOGLE_CLIENT_ID,
-      callback: onCredential,
-    });
-    google.accounts.id.renderButton(destino || gsiButton, {
-      theme: 'filled_black', size: 'large', shape: 'pill',
-      text: 'signin_with', locale: 'pt-BR', width: 260,
-    });
-    // Sem "One Tap": em navegador de celular, com bloqueio de cookies de
-    // terceiros, ele falha de um jeito confuso. O botão é um toque a mais
-    // e funciona sempre.
-    return true;
-  }
-
-  function esperarGoogle(tentativas, destino) {
-    if (iniciarGoogle(destino)) return;
-    if (tentativas <= 0) {
-      if (!usuario) setStatusMsg(loginStatus, 'Não foi possível carregar o login do Google. Verifique sua conexão.', 'err');
-      return;
-    }
-    setTimeout(function () { esperarGoogle(tentativas - 1, destino); }, 300);
-  }
-
-  /**
-   * Traz de volta o script de login do Google.
-   *
-   * Quem abre o app sem sinal (garagem, subsolo) fica sem esse script: a
-   * tag do index.html falhou e o navegador não tenta de novo sozinho. Sem
-   * isto, ao voltar o sinal não haveria como entrar nem esvaziar a fila
-   * sem fechar e reabrir o app.
-   */
-  function garantirScriptGoogle() {
-    if (window.google && google.accounts && google.accounts.id) return;
-    if (document.getElementById('gsi-recarga')) return;
-    var s = document.createElement('script');
-    s.id = 'gsi-recarga';
-    s.src = 'https://accounts.google.com/gsi/client';
-    s.async = true;
-    s.defer = true;
-    // Se falhar de novo (o sinal voltou e caiu), some com a tag para que a
-    // próxima tentativa possa acontecer.
-    s.onerror = function () { s.remove(); };
-    document.head.appendChild(s);
-  }
-
-  function mostrarLogin(mensagem) {
-    idToken = null;
+  function mostrarQuemEVoce() {
     appEl.hidden = true;
-    loginScreen.style.display = 'flex';
-    btnOffline.hidden = !lerIdentidade();
-    if (mensagem) setStatusMsg(loginStatus, mensagem, 'err');
-    esperarGoogle(20);
+    telaQuemEVoce.style.display = 'flex';
+    renderQuemEVoce();
   }
 
-  function sair() {
-    if (fila.length && !confirm('Há ' + fila.length + ' registro(s) esperando envio. Sair agora mantém tudo guardado no aparelho, mas só será enviado quando você entrar de novo. Sair mesmo assim?')) {
-      return;
-    }
-    if (window.google && google.accounts && google.accounts.id) {
-      google.accounts.id.disableAutoSelect();
-    }
-    idToken = null;
-    usuario = null;
-    limparIdentidade();
-    fecharModal(modalAccount);
-    mostrarLogin('Você saiu da sua conta.');
-  }
+  function renderQuemEVoce() {
+    var nomes = equipe.length ? equipe : [];
+    listaQuemEVoce.innerHTML = nomes.length
+      ? nomes.map(function (n) {
+          return '<button type="button" class="nome-opcao' + (n === tecnico ? ' ativo' : '') +
+            '" data-nome="' + escapeHtml(n) + '">' + escapeHtml(n) + '</button>';
+        }).join('')
+      : '<p class="campo-dica">Ainda não carregamos a lista da equipe. Digite seu nome abaixo.</p>';
 
-  function iniciarSessao() {
-    setStatusMsg(loginStatus, 'Verificando acesso...', 'info');
-    return api('session', {}).then(function (res) {
-      usuario = res.user;
-      configServidor = res.config || configServidor;
-      salvarIdentidade(usuario);
-      setStatusMsg(loginStatus, '', '');
-      entrarNoApp();
-      return sincronizar(true);
-    }).catch(function (err) {
-      idToken = null;
-      if (usuario) {
-        // Já estávamos trabalhando: não joga a pessoa (nem a fila) fora.
-        erroSincronizacao = err.message;
-        atualizarFaixaSync();
-      } else {
-        mostrarLogin(err.message);
-      }
+    listaQuemEVoce.querySelectorAll('[data-nome]').forEach(function (b) {
+      b.addEventListener('click', function () { escolherTecnico(b.dataset.nome); });
     });
+
+    var outro = el('nome-outro');
+    var confirmar = el('nome-confirmar');
+    outro.value = nomes.indexOf(tecnico) < 0 ? tecnico : '';
+    confirmar.onclick = function () {
+      var nome = outro.value.trim();
+      if (!nome) {
+        setStatusMsg(el('quem-status'), 'Escolha um nome da lista ou digite o seu.', 'err');
+        return;
+      }
+      escolherTecnico(nome);
+    };
+  }
+
+  function escolherTecnico(nome) {
+    salvarTecnico(nome);
+    entrarNoApp();
+    // A lista da equipe pode ter mudado na planilha; atualiza por trás.
+    sincronizar(true);
   }
 
   function entrarNoApp() {
-    loginScreen.style.display = 'none';
+    telaQuemEVoce.style.display = 'none';
     appEl.hidden = false;
     renderUserChip();
     renderNav();
@@ -553,10 +487,6 @@
         ? 'Sem internet. ' + n + ' registro(s) guardado(s) no aparelho — vão sozinhos quando voltar o sinal.'
         : 'Sem internet. Pode registrar normalmente: o envio acontece depois.';
       classe = 'sync-offline';
-    } else if (n && !temSessao()) {
-      texto = n + ' registro(s) esperando envio. Entre com o Google para enviar.';
-      classe = 'sync-alerta';
-      acao = { texto: 'Entrar', fn: abrirContaParaLogin };
     } else if (n) {
       texto = n + ' registro(s) esperando envio.' + (erroSincronizacao ? ' ' + erroSincronizacao : '');
       classe = 'sync-alerta';
@@ -565,10 +495,6 @@
       texto = erroSincronizacao;
       classe = 'sync-alerta';
       acao = { texto: 'Tentar de novo', fn: function () { sincronizar(true); } };
-    } else if (!temSessao()) {
-      texto = 'Trabalhando com os dados guardados no aparelho.';
-      classe = 'sync-offline';
-      acao = { texto: 'Entrar', fn: abrirContaParaLogin };
     }
 
     if (!texto) { syncBar.hidden = true; return; }
@@ -583,14 +509,6 @@
       syncAction.hidden = true;
       syncAction.onclick = null;
     }
-  }
-
-  function abrirContaParaLogin() {
-    garantirScriptGoogle();
-    renderConta();
-    modalAccount.classList.add('open');
-    var destino = el('gsi-button-conta');
-    if (destino) esperarGoogle(20, destino);
   }
 
   // ===================================================================
@@ -755,7 +673,7 @@
   }
 
   function rodapeHistorico() {
-    if (verHistorico || !temSessao()) return '';
+    if (verHistorico) return '';
     return '<div class="rodape-lista"><button class="btn secondary" id="btn-historico">Carregar histórico completo</button></div>';
   }
 
@@ -901,9 +819,8 @@
             ' · ' + r.abastecimentos + ' abastecimento(s) · ' + r.manutencoes + ' manutenção(ões)' +
             (r.gastoOcorrencias ? ' · ' + escapeHtml(C.formataMoeda(r.gastoOcorrencias)) + ' em ocorrências' : '') +
           '</div>' +
-          (usuario && usuario.perfil === 'Admin'
-            ? '<button class="btn secondary" data-fechar-mes="' + mes + '">' + (jaFechado ? 'Refazer fechamento' : 'Fechar este mês') + '</button>'
-            : '') +
+          '<button class="btn secondary" data-fechar-mes="' + mes + '">' +
+            (jaFechado ? 'Refazer fechamento' : 'Fechar este mês') + '</button>' +
         '</section>';
       }).join('');
 
@@ -1044,11 +961,24 @@
 
   var estadoForm = {};   // valores do formulário aberto agora
 
+  /**
+   * Nomes oferecidos no campo "quem está registrando": a equipe da planilha,
+   * mais quem estiver escolhido no aparelho (para o nome não sumir do campo
+   * se a lista ainda não carregou ou se a pessoa digitou um nome fora dela).
+   */
+  function opcoesDeTecnico() {
+    var nomes = equipe.slice();
+    if (tecnico && nomes.indexOf(tecnico) < 0) nomes.unshift(tecnico);
+    var atual = estadoForm.tecnico;
+    if (atual && nomes.indexOf(atual) < 0) nomes.unshift(atual);
+    return nomes;
+  }
+
   function abrirFormulario(nome) {
     var spec = FORMULARIOS[nome];
     if (!spec) return;
 
-    estadoForm = { _spec: spec, _nome: nome, _fotos: [] };
+    estadoForm = { _spec: spec, _nome: nome, _fotos: [], tecnico: tecnico };
     spec.campos.forEach(function (campo) {
       if (campo.padrao) estadoForm[campo.chave] = campo.padrao();
       else if (campo.tipo === 'chips-multi') estadoForm[campo.chave] = [];
@@ -1063,12 +993,23 @@
     var spec = estadoForm._spec;
     var v = registrosVisiveis();
     var kmConhecido = C.kmAtual(v);
-    var tecnico = (usuario && (usuario.nome || usuario.email)) || '';
 
     var html = '';
     if (spec.aviso) html += '<div class="aviso-regra">' + escapeHtml(spec.aviso) + '</div>';
-    html += '<div class="campo-fixo">Registrando como <strong>' + escapeHtml(tecnico) + '</strong>' +
-      (kmConhecido !== null ? ' · último KM: <strong>' + escapeHtml(C.formataKm(kmConhecido)) + '</strong>' : '') + '</div>';
+
+    // Quem está registrando: primeiro campo de todo formulário. Já vem
+    // marcado com quem usa o aparelho, então no dia a dia não custa toque
+    // nenhum — mas fica à vista e trocável, para quando alguém preencher
+    // no celular do colega.
+    html += renderCampo({
+      chave: 'tecnico', rotulo: 'Quem está registrando', tipo: 'chips',
+      opcoes: opcoesDeTecnico(), obrigatorio: true,
+    }, kmConhecido);
+
+    if (kmConhecido !== null) {
+      html += '<div class="campo-fixo">Último KM registrado: <strong>' +
+        escapeHtml(C.formataKm(kmConhecido)) + '</strong></div>';
+    }
 
     spec.campos.forEach(function (campo) {
       if (campo.soQuando) {
@@ -1204,6 +1145,7 @@
       var vazioo = v === undefined || v === null || v === '' || (Array.isArray(v) && !v.length);
       if (vazioo) faltando.push(campo.rotulo);
     });
+    if (!estadoForm.tecnico) faltando.unshift('Quem está registrando');
     if (faltando.length) {
       setStatusMsg(statusEl, 'Falta preencher: ' + faltando.join(', ') + '.', 'err');
       return;
@@ -1231,7 +1173,7 @@
     }
 
     // --- monta o registro só com os campos do formulário ---
-    var dados = Object.assign({}, spec.fixos || {});
+    var dados = Object.assign({ tecnico: estadoForm.tecnico }, spec.fixos || {});
     spec.campos.forEach(function (campo) {
       if (campo.chave === '_fotos') return;
       var v = estadoForm[campo.chave];
@@ -1286,6 +1228,7 @@
       el('f-fechar').disabled = true;
       setStatusMsg(statusEl, 'Salvando...', 'info');
       enfileirar('fechamento', {
+        tecnico: tecnico,
         mes: mes,
         kmInicial: r.kmInicial,
         kmFinal: r.kmFinal,
@@ -1311,7 +1254,6 @@
   // ===================================================================
 
   function abrirDetalhe(item) {
-    var ehAdmin = usuario && usuario.perfil === 'Admin';
     var linhas = [];
     var add = function (rotulo, valor) {
       if (valor === undefined || valor === null || valor === '') return;
@@ -1384,7 +1326,7 @@
         : '') +
       linhas.join('') +
       '<div class="detalhe-linha"><div class="l">Fotos</div><div class="fotos" id="fotos-detalhe">' + fotosHtml + '</div></div>' +
-      (item._tipo === 'ocorrencia' && !item._pendente && temSessao()
+      (item._tipo === 'ocorrencia' && !item._pendente
         ? '<div class="section-titulo">Situação</div>' +
           '<div class="chips" id="chips-status">' + STATUS_OCORRENCIA.map(function (s) {
             return '<button type="button" class="chip' + (item.status === s ? ' ativo' : '') + '" data-valor="' + escapeHtml(s) + '">' + escapeHtml(s) + '</button>';
@@ -1394,9 +1336,9 @@
       (item._pendente && item._erro
         ? '<button class="btn secondary" id="btn-descartar">Descartar este registro</button>'
         : '') +
-      (ehAdmin && !item._pendente
-        ? '<button class="btn danger" id="btn-apagar">Apagar da planilha</button>'
-        : '');
+      (item._pendente
+        ? ''
+        : '<p class="campo-dica">Para corrigir ou apagar um lançamento, abra a planilha.</p>');
 
     var chips = el('chips-status');
     if (chips) {
@@ -1416,23 +1358,6 @@
           fecharModal(modalDetail);
           atualizarFaixaSync();
           renderTelaAtual();
-        });
-      });
-    }
-
-    var apagar = el('btn-apagar');
-    if (apagar) {
-      apagar.addEventListener('click', function () {
-        if (!confirm('Apagar este registro da planilha? Não dá para desfazer.')) return;
-        var statusEl = el('detalhe-status');
-        setStatusMsg(statusEl, 'Apagando...', 'info');
-        api('delete', { tipo: item._tipo, id: item.id }).then(function () {
-          return carregarDaPlanilha();
-        }).then(function () {
-          fecharModal(modalDetail);
-          renderTelaAtual();
-        }).catch(function (err) {
-          setStatusMsg(statusEl, err.message, 'err');
         });
       });
     }
@@ -1477,114 +1402,40 @@
   }
 
   // ===================================================================
-  // Conta e administração
+  // Quem está usando este aparelho
   // ===================================================================
 
   function renderUserChip() {
-    if (!usuario) return;
-    var nome = usuario.nome || usuario.email;
+    var nome = tecnico || '?';
     var iniciais = nome.trim().split(/\s+/).slice(0, 2).map(function (p) { return p[0]; }).join('').toUpperCase();
     userChip.textContent = iniciais || '?';
-    userChip.classList.toggle('is-admin', usuario.perfil === 'Admin');
     if (configServidor.moto) motoNome.textContent = configServidor.moto;
   }
 
   function renderConta() {
-    var ehAdmin = usuario && usuario.perfil === 'Admin';
     accountBody.innerHTML =
-      (!temSessao()
-        ? '<div class="aviso-regra">Você está trabalhando com os dados guardados no aparelho. ' +
-          'Entre com o Google para enviar o que está na fila e ver a planilha atualizada.</div>' +
-          '<div id="gsi-button-conta" class="gsi-button"></div>'
-        : '') +
-      '<div class="detalhe-linha"><div class="l">Conectado como</div><div class="v">' + escapeHtml((usuario && usuario.nome) || '') + '</div></div>' +
-      '<div class="detalhe-linha"><div class="l">E-mail</div><div class="v">' + escapeHtml((usuario && usuario.email) || '') + '</div></div>' +
-      '<div class="detalhe-linha"><div class="l">Perfil</div><div class="v">' + escapeHtml((usuario && usuario.perfil) || '') + '</div></div>' +
+      '<div class="detalhe-linha"><div class="l">Usando este aparelho</div><div class="v">' +
+        escapeHtml(tecnico || 'Ninguém escolhido') + '</div></div>' +
+      '<div class="detalhe-linha"><div class="l">Moto</div><div class="v">' +
+        escapeHtml(configServidor.moto || '—') + '</div></div>' +
       '<div class="detalhe-linha"><div class="l">Fila de envio</div><div class="v">' +
         (fila.length ? fila.length + ' registro(s) esperando' : 'tudo enviado') + '</div></div>' +
-      '<button class="btn secondary" id="btn-sair">Sair desta conta</button>' +
-      (ehAdmin && temSessao() ? blocoAdmin() : '');
+      '<p class="campo-dica">O nome escolhido aqui já vem marcado no campo ' +
+      '"Quem está registrando" de cada formulário — e pode ser trocado ' +
+      'dentro do próprio formulário quando alguém preencher no seu celular.</p>' +
+      '<button class="btn secondary" id="btn-trocar-nome">Trocar de pessoa</button>' +
+      '<div class="section-titulo">Quem aparece na lista</div>' +
+      '<p class="campo-dica">A lista vem da aba <strong>Equipe</strong> da planilha. ' +
+      'Para incluir ou tirar alguém, edite essa aba — não precisa mexer no app.</p>' +
+      '<div class="equipe-lista">' +
+        (equipe.length
+          ? equipe.map(function (n) { return '<span class="chip">' + escapeHtml(n) + '</span>'; }).join('')
+          : '<span class="campo-dica">Lista ainda não carregada neste aparelho.</span>') +
+      '</div>';
 
-    el('btn-sair').addEventListener('click', sair);
-    if (ehAdmin && temSessao()) prepararAdmin();
-  }
-
-  function blocoAdmin() {
-    return '<div class="section-titulo">Quem pode acessar</div>' +
-      '<p class="campo-dica">Só estas contas Google conseguem entrar. Remover alguém tira o acesso na hora, em todos os aparelhos.</p>' +
-      '<div id="lista-usuarios"><span class="campo-dica">Carregando...</span></div>' +
-      '<div class="section-titulo">Adicionar ou atualizar</div>' +
-      '<div class="campo"><label for="u-email">E-mail (Gmail)</label><input type="email" id="u-email" placeholder="pessoa@gmail.com" autocomplete="off"></div>' +
-      '<div class="campo"><label for="u-nome">Nome</label><input type="text" id="u-nome" placeholder="Como aparece nos lançamentos"></div>' +
-      '<div class="campo"><label>Perfil</label><div class="chips" id="u-perfil">' +
-        '<button type="button" class="chip ativo" data-valor="Técnico">Técnico</button>' +
-        '<button type="button" class="chip" data-valor="Admin">Admin</button>' +
-      '</div></div>' +
-      '<button class="btn" id="u-salvar">Salvar acesso</button>' +
-      '<div id="usuarios-status"></div>';
-  }
-
-  function prepararAdmin() {
-    var perfil = 'Técnico';
-    var grupo = el('u-perfil');
-    grupo.addEventListener('click', function (e) {
-      var btn = e.target.closest('.chip');
-      if (!btn) return;
-      perfil = btn.dataset.valor;
-      Array.prototype.forEach.call(grupo.children, function (c) {
-        c.classList.toggle('ativo', c.dataset.valor === perfil);
-      });
-    });
-
-    el('u-salvar').addEventListener('click', function () {
-      var statusEl = el('usuarios-status');
-      var email = el('u-email').value.trim();
-      if (!email) return setStatusMsg(statusEl, 'Informe o e-mail.', 'err');
-      setStatusMsg(statusEl, 'Salvando...', 'info');
-      api('saveUser', { data: { email: email, nome: el('u-nome').value.trim(), perfil: perfil, ativo: true } })
-        .then(function (res) {
-          setStatusMsg(statusEl, 'Acesso salvo!', 'ok');
-          el('u-email').value = '';
-          el('u-nome').value = '';
-          renderListaUsuarios(res.users);
-        })
-        .catch(function (err) { setStatusMsg(statusEl, err.message, 'err'); });
-    });
-
-    api('listUsers', {})
-      .then(function (res) { renderListaUsuarios(res.users); })
-      .catch(function (err) { setStatusMsg(el('usuarios-status'), err.message, 'err'); });
-  }
-
-  function renderListaUsuarios(users) {
-    var wrap = el('lista-usuarios');
-    if (!wrap) return;
-    if (!users || !users.length) {
-      wrap.innerHTML = '<span class="campo-dica">Ninguém cadastrado ainda.</span>';
-      return;
-    }
-    wrap.innerHTML = '';
-    users.forEach(function (u) {
-      var row = document.createElement('div');
-      row.className = 'usuario';
-      row.innerHTML = '<div class="usuario-info">' +
-        '<div class="usuario-nome">' + escapeHtml(u.nome || u.email) +
-        (u.perfil === 'Admin' ? ' <span class="tag-admin">Admin</span>' : '') + '</div>' +
-        '<div class="usuario-email">' + escapeHtml(u.email) + '</div></div>';
-      if (u.email !== usuario.email) {
-        var del = document.createElement('button');
-        del.className = 'icon-btn danger';
-        del.textContent = '×';
-        del.title = 'Remover acesso';
-        del.addEventListener('click', function () {
-          if (!confirm('Remover o acesso de ' + u.email + '?')) return;
-          api('deleteUser', { email: u.email })
-            .then(function (res) { renderListaUsuarios(res.users); })
-            .catch(function (err) { setStatusMsg(el('usuarios-status'), err.message, 'err'); });
-        });
-        row.appendChild(del);
-      }
-      wrap.appendChild(row);
+    el('btn-trocar-nome').addEventListener('click', function () {
+      fecharModal(modalAccount);
+      mostrarQuemEVoce();
     });
   }
 
@@ -1601,17 +1452,8 @@
     modal.addEventListener('click', function (e) { if (e.target === modal) fecharModal(modal); });
   });
   userChip.addEventListener('click', function () {
-    if (!temSessao()) garantirScriptGoogle();
     renderConta();
     modalAccount.classList.add('open');
-    if (!temSessao()) {
-      var destino = el('gsi-button-conta');
-      if (destino) esperarGoogle(20, destino);
-    }
-  });
-  btnOffline.addEventListener('click', function () {
-    usuario = lerIdentidade();
-    if (usuario) entrarNoApp();
   });
 
   // ===================================================================
@@ -1625,32 +1467,32 @@
   }
 
   function comecar() {
-    Promise.all([lerFila(), lerCache('registros'), lerCache('config')])
+    Promise.all([lerFila(), lerCache('registros'), lerCache('config'), lerCache('equipe')])
       .then(function (r) {
         fila = r[0] || [];
         if (r[1]) registros = r[1];
         if (r[2]) configServidor = r[2];
+        if (r[3]) equipe = r[3];
       })
       .catch(function () { /* primeiro uso: não há nada guardado ainda */ })
       .then(function () {
-        usuario = lerIdentidade();
-        if (usuario) {
-          // Já trabalhou aqui antes: entra direto na tela de trabalho, com
-          // ou sem sinal. O login roda por trás para liberar o envio.
+        tecnico = lerTecnico();
+        if (tecnico) {
+          // Já usou este aparelho antes: vai direto para o trabalho, com ou
+          // sem sinal. Nada a digitar, nada a esperar.
           entrarNoApp();
           acaoDaUrl();
-          if (navigator.onLine) esperarGoogle(20);
         } else {
-          mostrarLogin();
+          mostrarQuemEVoce();
         }
+        // Busca dados e lista da equipe por trás; se não houver sinal, o app
+        // segue funcionando com o que está guardado.
+        sincronizar(true);
       });
   }
 
   // Gatilhos de sincronização: cada um cobre um jeito de o sinal voltar.
   window.addEventListener('online', function () {
-    // Sem sessão (o app foi aberto sem sinal), o primeiro passo é ter o
-    // login do Google disponível de novo — senão nem dá para entrar.
-    if (!temSessao()) garantirScriptGoogle();
     atualizarFaixaSync();
     sincronizar(true);
   });

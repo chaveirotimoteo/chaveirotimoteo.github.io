@@ -1,0 +1,32 @@
+# Configuração de publicação na Netlify.
+# O site é estático: não há build, a pasta do repositório é publicada como está.
+
+[build]
+  publish = "."
+  command = ""
+
+# Este site é o painel de socorros: a raiz vai direto para o app, em vez de
+# cair na página de redirecionamento herdada do GitHub Pages.
+# (force = true para ter precedência sobre o index.html da raiz.)
+[[redirects]]
+  from = "/"
+  to = "/socorro/"
+  status = 302
+  force = true
+
+# Cabeçalhos de segurança aplicados a todas as páginas.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(self)"
+
+# O app de socorro trabalha com dados de clientes: não deve ser indexado
+# por buscadores nem guardado em cache de intermediários.
+[[headers]]
+  for = "/socorro/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-store"

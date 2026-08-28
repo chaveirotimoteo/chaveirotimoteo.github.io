@@ -1,4 +1,4 @@
-const CACHE = 'socorro-v1';
+const CACHE = 'socorro-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -22,14 +22,21 @@ self.addEventListener('activate', (e) => {
 
 // Rede primeiro, cache só como reserva do "esqueleto" do app (pra abrir
 // rápido/offline). Os dados dos atendimentos vêm sempre da planilha via
-// POST e não são cacheados aqui — exigem conexão.
+// POST e não são cacheados aqui — exigem conexão. As fotos também não:
+// chegam pela API já autenticada e ficam só na memória da página.
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
+
+  // Só mexemos no que é do próprio site. Recursos de outras origens (o
+  // script de login do Google, por exemplo) passam direto: a resposta é
+  // opaca e guardá-la no cache falharia silenciosamente.
+  if (new URL(e.request.url).origin !== self.location.origin) return;
 
   e.respondWith(
     fetch(e.request)
       .then((res) => {
-        caches.open(CACHE).then((c) => c.put(e.request, res.clone()));
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(() => {});
         return res;
       })
       .catch(() => caches.match(e.request))

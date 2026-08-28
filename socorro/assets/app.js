@@ -88,8 +88,6 @@
     google.accounts.id.initialize({
       client_id: CONFIG.GOOGLE_CLIENT_ID,
       callback: onCredential,
-      auto_select: true,
-      cancel_on_tap_outside: false,
     });
     google.accounts.id.renderButton(gsiButton, {
       theme: 'filled_black',
@@ -99,7 +97,11 @@
       locale: 'pt-BR',
       width: 260,
     });
-    google.accounts.id.prompt();
+    // Não usamos o "One Tap" (auto_select + prompt): em navegadores móveis
+    // e com bloqueio de cookies de terceiros ele costuma falhar de forma
+    // confusa (inclusive com erro de origem) mesmo com tudo configurado
+    // certo. O botão explícito é mais lento em um toque, mas muito mais
+    // confiável entre aparelhos.
   }
 
   function waitForGoogle(tries) {

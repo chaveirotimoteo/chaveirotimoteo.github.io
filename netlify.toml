@@ -5,6 +5,15 @@
   publish = "."
   command = ""
 
+# Este site é o painel de socorros: a raiz vai direto para o app, em vez de
+# cair na página de redirecionamento herdada do GitHub Pages.
+# (force = true para ter precedência sobre o index.html da raiz.)
+[[redirects]]
+  from = "/"
+  to = "/socorro/"
+  status = 302
+  force = true
+
 # Cabeçalhos de segurança aplicados a todas as páginas.
 [[headers]]
   for = "/*"

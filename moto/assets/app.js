@@ -259,7 +259,17 @@
     }).then(function (res) {
       return res.json();
     }).then(function (json) {
-      if (!json.ok) throw new Error(json.error || 'Erro desconhecido.');
+      if (!json.ok) {
+        // "authFailed" só existe na versão antiga do Code.gs, a que ainda
+        // pedia login. Se ela vier, o script publicado na planilha está
+        // desatualizado — e o erro dela ("Faça login para continuar") não
+        // ajudaria ninguém a descobrir isso.
+        if (json.authFailed) {
+          throw new Error('O script publicado na planilha é uma versão antiga (a que pedia login). ' +
+            'Cole o Code.gs atual e refaça: Implantar → Gerenciar implantações → Nova versão.');
+        }
+        throw new Error(json.error || 'Erro desconhecido.');
+      }
       return json;
     });
   }

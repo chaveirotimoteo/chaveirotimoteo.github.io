@@ -7,7 +7,7 @@
     API_URL: 'https://script.google.com/macros/s/AKfycbwlZUq4YClqfq9UeHXB8qPLe058FpEVZyD1yrZNpZ_ge937eo42yXoVOGZ4jBn9Bwvx/exec',
     // Client ID criado no Google Cloud Console (ver apps-script/README.md).
     // Precisa ser idêntico ao CLIENT_ID do Code.gs.
-    GOOGLE_CLIENT_ID: 'COLE_AQUI_O_CLIENT_ID.apps.googleusercontent.com',
+    GOOGLE_CLIENT_ID: '725408565457-tva4ijg1dvu1mdfb0tcvj0d87fml43k2.apps.googleusercontent.com',
   };
 
   const STATUS_LIST = ['Pendente', 'Devedor', 'Finalizado'];

@@ -12,7 +12,7 @@
 // Cole aqui o Client ID criado no Google Cloud Console (ver README.md).
 // Precisa ser IDÊNTICO ao GOOGLE_CLIENT_ID de assets/app.js.
 // Este valor é público por natureza — não é segredo.
-var CLIENT_ID = 'COLE_AQUI_O_CLIENT_ID.apps.googleusercontent.com';
+var CLIENT_ID = '725408565457-tva4ijg1dvu1mdfb0tcvj0d87fml43k2.apps.googleusercontent.com';
 
 // Primeiro administrador. Se a aba "Usuarios" ainda não existir ou estiver
 // vazia, este e-mail é cadastrado como Admin para você conseguir entrar e

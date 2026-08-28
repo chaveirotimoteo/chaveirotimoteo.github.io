@@ -9,9 +9,28 @@ pedido, e o Apps Script confere com o Google e procura o e-mail na aba
 `Usuarios` da planilha. Não existe senha guardada em lugar nenhum — nem no
 código, nem na planilha, nem no aparelho.
 
+> **Siga as partes na ordem.** A configuração do Google exige o endereço
+> definitivo do site, por isso a publicação na Netlify vem primeiro.
+
 ---
 
-## Parte 1 — Criar o Client ID do Google
+## Parte 1 — Publicar o site na Netlify
+
+1. [app.netlify.com](https://app.netlify.com/) → **Add new site → Import an
+   existing project** → GitHub → escolha este repositório
+2. Branch: `main` (ou o branch onde está a versão que você quer publicar)
+3. Build command: deixe **vazio**. Publish directory: `.`
+   (o `netlify.toml` na raiz já define isso)
+4. **Deploy**
+5. A Netlify gera um nome aleatório. Troque por um definitivo em **Site
+   configuration → Change site name** (ex: `chaveirotimoteo-socorro`)
+
+Anote o endereço final — ele é usado na Parte 2 e não deve mudar depois,
+sob pena de o login parar de funcionar até ser atualizado lá.
+
+O app fica em `https://SEU-SITE.netlify.app/socorro/`.
+
+## Parte 2 — Criar o Client ID do Google
 
 É o que permite o botão "Entrar com Google". Gratuito.
 
@@ -38,7 +57,7 @@ código, nem na planilha, nem no aparelho.
 do site publicado. Se o endereço mudar, o login para de funcionar até você
 atualizar aqui.
 
-## Parte 2 — Colocar o Client ID nos dois arquivos
+## Parte 3 — Colocar o Client ID nos dois arquivos
 
 O mesmo valor vai em dois lugares:
 
@@ -47,7 +66,7 @@ O mesmo valor vai em dois lugares:
 
 Esse valor é público por natureza — pode ficar no repositório sem problema.
 
-## Parte 3 — Publicar o Apps Script
+## Parte 4 — Publicar o Apps Script
 
 1. Na planilha: **Extensões → Apps Script**
 2. Apague o conteúdo e cole o `Code.gs` desta pasta
@@ -70,18 +89,6 @@ Esse valor é público por natureza — pode ficar no repositório sem problema.
 **Implantar → Gerenciar implantações → ✏️ (lápis) → Versão: Nova versão →
 Implantar.** Salvar o arquivo não basta, e **não** use "Nova implantação",
 que geraria um endereço diferente.
-
-## Parte 4 — Publicar o site na Netlify
-
-1. [app.netlify.com](https://app.netlify.com/) → **Add new site → Import an
-   existing project** → GitHub → escolha este repositório
-2. Build command: deixe **vazio**. Publish directory: `.`
-   (o `netlify.toml` na raiz já define isso)
-3. Publique e anote o endereço (`https://algo.netlify.app`)
-4. Volte na Parte 1 e cadastre esse endereço nas Origens JavaScript
-   autorizadas — sem isso o login não abre
-
-O app fica em `https://SEU-SITE.netlify.app/socorro/`.
 
 ## Parte 5 — Primeiro acesso e cadastro da equipe
 

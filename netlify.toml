@@ -1,0 +1,23 @@
+# Configuração de publicação na Netlify.
+# O site é estático: não há build, a pasta do repositório é publicada como está.
+
+[build]
+  publish = "."
+  command = ""
+
+# Cabeçalhos de segurança aplicados a todas as páginas.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(self)"
+
+# O app de socorro trabalha com dados de clientes: não deve ser indexado
+# por buscadores nem guardado em cache de intermediários.
+[[headers]]
+  for = "/socorro/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-store"

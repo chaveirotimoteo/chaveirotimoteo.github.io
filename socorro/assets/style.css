@@ -39,7 +39,40 @@ body{
   color:var(--text);
   padding:calc(env(safe-area-inset-top) + 14px) 16px 12px;
 }
+/* ===== Tela de login ===== */
+.login-screen{
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;padding:24px;
+}
+.login-card{
+  width:100%;max-width:360px;text-align:center;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:18px;padding:32px 24px;box-shadow:var(--shadow);
+}
+.login-mark{
+  width:64px;height:64px;margin:0 auto 16px;border-radius:16px;
+  background:#000;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 12px rgba(212,175,55,.25);
+}
+.login-card h1{
+  margin:0;font-size:1.25rem;font-weight:700;
+  background:linear-gradient(90deg,var(--primary-strong),#fff5da);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.login-sub{margin:4px 0 0;font-size:.72rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+.login-hint{margin:18px 0 22px;font-size:.88rem;color:var(--muted);line-height:1.5;}
+.gsi-button{display:flex;justify-content:center;min-height:44px;}
+
 .brand{display:flex;align-items:center;gap:10px;margin:0;}
+.brand-text{min-width:0;flex:1 1 auto;}
+.user-chip{
+  flex:0 0 auto;width:36px;height:36px;border-radius:50%;
+  background:var(--surface-2);border:1px solid var(--border);
+  color:var(--text);font-size:.82rem;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.user-chip.is-admin{border-color:var(--primary);color:var(--primary-strong);}
 .brand .mark{
   width:42px;height:42px;border-radius:11px;
   background:#000000;
@@ -165,7 +198,27 @@ main{padding:8px 16px 96px;max-width:720px;margin:0 auto;}
 .detail-row{margin-bottom:10px;font-size:.94rem;}
 .detail-row .l{color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.03em;margin-bottom:2px;}
 .detail-row .v{overflow-wrap:anywhere;}
-.photos-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
-.photos-row a img{width:74px;height:74px;object-fit:cover;border-radius:8px;border:1px solid var(--border);display:block;}
+.photos-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;align-items:flex-start;}
+.photo-thumb{
+  width:74px;height:74px;object-fit:cover;border-radius:8px;
+  border:1px solid var(--border);display:block;cursor:zoom-in;
+}
+.photo-thumb.zoom{width:100%;height:auto;max-height:70vh;object-fit:contain;cursor:zoom-out;}
+
+/* ===== Lista de acessos (admin) ===== */
+.user-row{
+  display:flex;align-items:center;gap:10px;
+  background:var(--surface-2);border:1px solid var(--border);
+  border-radius:10px;padding:10px 12px;margin-bottom:8px;
+}
+.user-info{flex:1 1 auto;min-width:0;}
+.user-name{font-size:.95rem;font-weight:600;overflow-wrap:anywhere;}
+.user-email{font-size:.8rem;color:var(--muted);overflow-wrap:anywhere;}
+.tag-admin{
+  font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--primary-strong);background:rgba(212,175,55,.15);
+  border-radius:999px;padding:2px 7px;margin-left:4px;vertical-align:middle;
+}
+.icon-btn.danger{color:var(--danger);font-size:1.3rem;flex:0 0 auto;}
 .section-title{font-weight:700;margin:22px 0 4px;font-size:1.02rem;color:var(--primary-strong);}
 .hint{font-size:.84rem;color:var(--muted);margin-top:-6px;margin-bottom:14px;}

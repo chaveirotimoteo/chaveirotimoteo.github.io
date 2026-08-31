@@ -12,7 +12,7 @@
 // Sobe a cada mudança neste arquivo. Serve só para você conferir, pela
 // resposta de diagnóstico (ver função diag()), se a implantação está
 // rodando esta versão ou uma versão antiga esquecida.
-var CODE_VERSION = '2026-08-28-2';
+var CODE_VERSION = '2026-08-28-3';
 
 // Por padrão a lista traz TODOS os pendentes e devedores (trabalho em
 // aberto nunca some de vista) mas só os finalizados recentes. O histórico
@@ -72,7 +72,30 @@ function diag() {
   }
 
   try {
-    linhas.push('[OK] Planilha acessível: "' + SpreadsheetApp.getActiveSpreadsheet().getName() + '".');
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    linhas.push('[OK] Planilha acessível: "' + ss.getName() + '".');
+
+    // O nome do ARQUIVO não importa (o script é preso ao ID da planilha),
+    // mas o nome da ABA importa: se não existir uma aba exatamente
+    // "Socorros", o app cria uma nova e passa a gravar nela, enquanto os
+    // dados antigos ficam na aba renomeada.
+    var nomes = ss.getSheets().map(function (s) {
+      return '"' + s.getName() + '" (' + Math.max(s.getLastRow() - 1, 0) + ' registros)';
+    });
+    linhas.push('     Abas existentes: ' + nomes.join(', '));
+
+    var alvo = ss.getSheetByName(SHEET_NAME);
+    if (alvo) {
+      linhas.push('[OK] Aba "' + SHEET_NAME + '" encontrada com ' + Math.max(alvo.getLastRow() - 1, 0) + ' registro(s).');
+    } else {
+      linhas.push('[FALHA] Não existe aba chamada exatamente "' + SHEET_NAME + '".');
+      linhas.push('        -> Renomeie a aba dos atendimentos de volta para "' + SHEET_NAME + '" (sem espaços antes/depois).');
+    }
+
+    var abaUsuarios = ss.getSheetByName(USERS_SHEET);
+    linhas.push(abaUsuarios
+      ? '[OK] Aba "' + USERS_SHEET + '" encontrada com ' + Math.max(abaUsuarios.getLastRow() - 1, 0) + ' usuário(s).'
+      : '[AVISO] Aba "' + USERS_SHEET + '" ainda não existe (será criada no primeiro acesso).');
   } catch (err) {
     linhas.push('[FALHA] Planilha inacessível: ' + err.message);
   }

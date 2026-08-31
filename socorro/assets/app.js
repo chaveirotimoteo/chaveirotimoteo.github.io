@@ -154,12 +154,34 @@
       throw new Error('O app ainda não foi conectado à planilha.');
     }
     const body = Object.assign({ action, idToken }, payload);
-    const res = await fetch(CONFIG.API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(body),
-    });
-    const json = await res.json();
+    const corpo = JSON.stringify(body);
+
+    let res;
+    try {
+      res = await fetch(CONFIG.API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: corpo,
+      });
+    } catch (e) {
+      // fetch só rejeita por falha de rede, então a mensagem crua ("Failed
+      // to fetch") não ajuda quem está usando. O tamanho do envio costuma
+      // ser o culpado quando há fotos.
+      const mb = (corpo.length / 1048576).toFixed(1);
+      throw new Error(
+        corpo.length > 4 * 1048576
+          ? 'O envio ficou grande demais (' + mb + ' MB) e não completou. Tente com menos fotos por vez.'
+          : 'Sem conexão com o servidor. Verifique a internet e tente de novo.'
+      );
+    }
+
+    let json;
+    try {
+      json = await res.json();
+    } catch (e) {
+      throw new Error('O servidor respondeu de forma inesperada (HTTP ' + res.status + '). Se persistir, refaça a implantação do Apps Script.');
+    }
+
     if (!json.ok) {
       const err = new Error(json.error || 'Erro desconhecido.');
       err.authFailed = !!json.authFailed;
@@ -177,18 +199,69 @@
     setStatusMsg(el, err.message, 'err');
   }
 
+  const FOTO_LADO_MAX = 1600; // pixels no maior lado
+  const FOTO_QUALIDADE = 0.8;
+
   function fileToBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result.split(',')[1]);
-      reader.onerror = reject;
+      reader.onerror = () => reject(new Error('Não foi possível ler o arquivo.'));
       reader.readAsDataURL(file);
+    });
+  }
+
+  // Foto de celular costuma ter vários MB, e em base64 cresce mais um terço.
+  // Enviar assim trava o upload em rede móvel. Reduzir para 1600px de lado
+  // mantém a foto legível para conferência e derruba o tamanho para a casa
+  // das centenas de KB.
+  function comprimirImagem(file) {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        try {
+          const escala = Math.min(1, FOTO_LADO_MAX / Math.max(img.width, img.height));
+          const largura = Math.max(1, Math.round(img.width * escala));
+          const altura = Math.max(1, Math.round(img.height * escala));
+
+          const canvas = document.createElement('canvas');
+          canvas.width = largura;
+          canvas.height = altura;
+          canvas.getContext('2d').drawImage(img, 0, 0, largura, altura);
+
+          const dataUrl = canvas.toDataURL('image/jpeg', FOTO_QUALIDADE);
+          resolve({
+            name: (file.name || 'foto').replace(/\.[^.]+$/, '') + '.jpg',
+            mimeType: 'image/jpeg',
+            base64: dataUrl.split(',')[1],
+          });
+        } catch (err) {
+          reject(err);
+        }
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error('Não foi possível abrir a imagem.'));
+      };
+      img.src = url;
     });
   }
 
   async function filesToPayload(fileList) {
     const files = Array.from(fileList || []);
-    return Promise.all(files.map(async (f) => ({ name: f.name, mimeType: f.type, base64: await fileToBase64(f) })));
+    const out = [];
+    for (const f of files) {
+      try {
+        out.push(await comprimirImagem(f));
+      } catch (err) {
+        // Formato que o navegador não sabe desenhar (HEIC antigo, por
+        // exemplo): manda o original em vez de perder a foto.
+        out.push({ name: f.name, mimeType: f.type, base64: await fileToBase64(f) });
+      }
+    }
+    return out;
   }
 
   // ===== Lista de atendimentos =====
